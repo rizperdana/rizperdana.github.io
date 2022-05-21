@@ -1,0 +1,22 @@
+{
+    "name": "rizperdana-vue-resume",
+    "version": "1.0.0",
+    "description": "This is web based resume for my experiences, it build upon vue and now it support print function exaclty as the same as website look.",
+    "main": "index.js",
+    "repository": "https://github.com/rizperdana/rizperdana.github.io.git",
+    "author": "rizperdana",
+    "license": "MIT",
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt",
+        "start": "nuxt start",
+        "generate": "nuxt generate"
+    },
+    "dependencies": {
+        "global": "^4.4.0",
+        "jump.js": "^1.0.2",
+        "nuxt": "^2.15.8",
+        "vue-awesome-swiper": "^5.0.1",
+        "vue-cli": "^2.9.6"
+    }
+}
