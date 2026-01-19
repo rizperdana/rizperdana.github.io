@@ -1,0 +1,73 @@
+{
+    "name": "Rizki Perdana",
+    "title": "Backend Engineer",
+    "contacts": [
+        "+62 8960 1361 061",
+        "perdana.rizki16@gmail.com",
+        "https://www.linkedin.com/in/rizkiperdana",
+        "Yogyakarta, Indonesia"
+    ],
+    "summary": "Backend Engineer with 6+ years of experience designing and building scalable distributed systems. Proven track record in leading technical initiatives, optimizing system performance, and driving product innovation. Expertise in system architecture, API development, database design, and cloud infrastructure. Strong background in AI integration and workflow automation with a focus on delivering robust, maintainable solutions.",
+    "experience": [
+        {
+            "company": "SourceSage",
+            "title": "Backend Engineer",
+            "location": "Singapore",
+            "period": "Mar 2022 – Present",
+            "achievements": [
+                "Architected and implemented high-performance RESTful API services handling millions of requests daily for enterprise B2B integrations",
+                "Led the design of system architecture improvements that increased overall platform reliability by 40% and reduced latency by 60%",
+                "Spearheaded the integration of AI capabilities and large language models into core product features, enabling advanced automation and intelligence",
+                "Established comprehensive CI/CD practices and automated testing strategies that reduced deployment failures by 75% and deployment time by 50%",
+                "Mentored junior engineers and established coding standards and best practices across the engineering organization"
+            ]
+        },
+        {
+            "company": "PT. Gamatechno Indonesia",
+            "title": "Backend Engineer",
+            "location": "Yogyakarta, Indonesia",
+            "period": "Feb 2020 – Feb 2022",
+            "achievements": [
+                "Designed and developed microservices architecture supporting multiple client applications with diverse requirements",
+                "Created comprehensive API documentation and contracts that improved cross-team collaboration and reduced integration time by 30%",
+                "Collaborated with frontend teams to define API specifications and ensure seamless integration between client and server components"
+            ]
+        },
+        {
+            "company": "PT. Diginet Media",
+            "title": "Software Engineer",
+            "location": "Yogyakarta, Indonesia",
+            "period": "Sep 2014 – Jan 2016",
+            "achievements": [
+                "Developed full-stack web applications for various clients, delivering projects on time and meeting business requirements",
+                "Built and maintained RESTful API services supporting web and mobile applications with thousands of daily users",
+                "Implemented secure authentication and authorization systems protecting sensitive user data and business information"
+            ]
+        }
+    ],
+    "education": {
+        "institution": "Yogyakarta State University",
+        "degree": "Bachelor of Computer Science",
+        "location": "Yogyakarta, Indonesia",
+        "period": "2016 – 2020"
+    },
+    "skills": {
+        "Programming Languages": "Python, Ruby, JavaScript, PHP, SQL, Shell Scripting",
+        "System Architecture & Design": "Microservices, REST APIs, Event-Driven Architecture, Distributed Systems, System Design Patterns",
+        "Database Technologies": "Relational Databases (MySQL, PostgreSQL), NoSQL Databases, Database Optimization, Data Modeling, Transaction Management",
+        "Cloud & DevOps": "Containerization, CI/CD Pipelines, Infrastructure as Code, Cloud Platforms, Automated Testing, Monitoring & Logging",
+        "AI & Intelligent Systems": "Large Language Models, AI Integration, Workflow Automation, Natural Language Processing, Intelligent Systems Design",
+        "Performance & Scalability": "System Optimization, Caching Strategies, Load Balancing, Performance Monitoring",
+        "Development Practices": "Agile Methodologies, Code Review, Technical Documentation, System Architecture, Security Best Practices"
+    },
+    "languages": [
+        {
+            "name": "English",
+            "level": "Professional Proficiency"
+        },
+        {
+            "name": "Indonesian",
+            "level": "Native"
+        }
+    ]
+}

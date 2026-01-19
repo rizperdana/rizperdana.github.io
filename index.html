@@ -292,6 +292,20 @@
             text-align: center;
         }
 
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+
         @media (max-width: 768px) {
             .hero h1 {
                 font-size: 2rem;
@@ -329,23 +343,14 @@
         <!-- HOME SECTION -->
         <section id="home" class="section active">
             <div class="hero">
-                <h1>Rizki Perdana</h1>
-                <div class="title">Backend Engineer</div>
-                <p class="summary">
-                    Backend Engineer with 6+ years of experience designing and building scalable distributed systems.
-                    Proven track record in leading technical initiatives, optimizing system performance, and driving product innovation.
-                    Expertise in system architecture, API development, database design, and cloud infrastructure with a strong background
-                    in AI integration and workflow automation.
-                </p>
+                <h1 id="home-name">Loading...</h1>
+                <div id="home-title" class="title"></div>
+                <p id="home-summary" class="summary"></p>
                 <div class="cta-buttons">
                     <a href="#projects" class="btn btn-primary nav-link">View Projects</a>
                     <a href="#cv" class="btn btn-secondary nav-link">View CV</a>
                 </div>
-                <div class="contact-info">
-                    <span>📧 <a href="mailto:perdana.rizki16@gmail.com">perdana.rizki16@gmail.com</a></span>
-                    <span>📍 Yogyakarta, Indonesia</span>
-                    <span>🔗 <a href="https://www.linkedin.com/in/rizkiperdana" target="_blank">LinkedIn</a></span>
-                </div>
+                <div id="home-contacts" class="contact-info"></div>
             </div>
         </section>
 
@@ -353,7 +358,7 @@
         <section id="projects" class="section">
             <h2 style="margin-bottom: 2rem; font-size: 2.5rem;">Projects</h2>
             <div id="projects-container" class="projects-grid">
-                <!-- Projects will be loaded here -->
+                <div class="loading">Loading projects...</div>
             </div>
         </section>
 
@@ -365,127 +370,99 @@
 
             <div class="cv-section">
                 <h2>Professional Experience</h2>
-                <div id="experience-container"></div>
+                <div id="experience-container">
+                    <div class="loading">Loading experience...</div>
+                </div>
             </div>
 
             <div class="cv-section">
                 <h2>Education</h2>
-                <div id="education-container"></div>
+                <div id="education-container">
+                    <div class="loading">Loading education...</div>
+                </div>
             </div>
 
             <div class="cv-section">
                 <h2>Skills</h2>
-                <div id="skills-container" class="skills-grid"></div>
+                <div id="skills-container" class="skills-grid">
+                    <div class="loading">Loading skills...</div>
+                </div>
             </div>
 
             <div class="cv-section">
                 <h2>Languages</h2>
-                <div id="languages-container"></div>
+                <div id="languages-container">
+                    <div class="loading">Loading languages...</div>
+                </div>
             </div>
         </section>
     </div>
 
     <script>
-        // Profile data
-        const profileData = {
-            name: "Rizki Perdana",
-            title: "Backend Engineer",
-            contacts: [
-                "+62 8960 1361 061",
-                "perdana.rizki16@gmail.com",
-                "https://www.linkedin.com/in/rizkiperdana",
-                "Yogyakarta, Indonesia"
-            ],
-            summary: "Backend Engineer with 6+ years of experience designing and building scalable distributed systems. Proven track record in leading technical initiatives, optimizing system performance, and driving product innovation. Expertise in system architecture, API development, database design, and cloud infrastructure. Strong background in AI integration and workflow automation with a focus on delivering robust, maintainable solutions.",
-            experience: [
-                {
-                    company: "SourceSage",
-                    title: "Backend Engineer",
-                    location: "Singapore",
-                    period: "Mar 2022 - Present",
-                    achievements: [
-                        "Architected and implemented high-performance RESTful API services handling millions of requests daily for enterprise B2B integrations",
-                        "Led the design of system architecture improvements that increased overall platform reliability by 40% and reduced latency by 60%",
-                        "Spearheaded the integration of AI capabilities and large language models into core product features, enabling advanced automation and intelligence",
-                        "Established comprehensive CI/CD practices and automated testing strategies that reduced deployment failures by 75% and deployment time by 50%",
-                        "Mentored junior engineers and established coding standards and best practices across the engineering organization"
-                    ]
-                },
-                {
-                    company: "PT. Gamatechno Indonesia",
-                    title: "Backend Engineer",
-                    location: "Yogyakarta, Indonesia",
-                    period: "Feb 2020 - Feb 2022",
-                    achievements: [
-                        "Designed and developed microservices architecture supporting multiple client applications with diverse requirements",
-                        "Created comprehensive API documentation and contracts that improved cross-team collaboration and reduced integration time by 30%",
-                        "Collaborated with frontend teams to define API specifications and ensure seamless integration between client and server components"
-                    ]
-                },
-                {
-                    company: "PT. Diginet Media",
-                    title: "Software Engineer",
-                    location: "Yogyakarta, Indonesia",
-                    period: "Sep 2014 - Jan 2016",
-                    achievements: [
-                        "Developed full-stack web applications for various clients, delivering projects on time and meeting business requirements",
-                        "Built and maintained RESTful API services supporting web and mobile applications with thousands of daily users",
-                        "Implemented secure authentication and authorization systems protecting sensitive user data and business information"
-                    ]
+        let profileData = null;
+        let projectsData = null;
+
+        // Load JSON data
+        async function loadData() {
+            try {
+                const [profileRes, projectsRes] = await Promise.all([
+                    fetch('profile.json'),
+                    fetch('projects.json')
+                ]);
+
+                if (!profileRes.ok || !projectsRes.ok) {
+                    throw new Error('Failed to load data files');
                 }
-            ],
-            education: {
-                institution: "Yogyakarta State University",
-                degree: "Bachelor of Computer Science",
-                location: "Yogyakarta, Indonesia",
-                period: "2016 - 2020"
-            },
-            skills: {
-                "Programming Languages": "Python, Ruby, JavaScript, PHP, SQL, Shell Scripting",
-                "System Architecture & Design": "Microservices, REST APIs, Event-Driven Architecture, Distributed Systems, System Design Patterns",
-                "Database Technologies": "Relational Databases (MySQL, PostgreSQL), NoSQL Databases, Database Optimization, Data Modeling, Transaction Management",
-                "Cloud & DevOps": "Containerization, CI/CD Pipelines, Infrastructure as Code, Cloud Platforms, Automated Testing, Monitoring & Logging",
-                "AI & Intelligent Systems": "Large Language Models, AI Integration, Workflow Automation, Natural Language Processing, Intelligent Systems Design",
-                "Performance & Scalability": "System Optimization, Caching Strategies, Load Balancing, Performance Monitoring",
-                "Development Practices": "Agile Methodologies, Code Review, Technical Documentation, System Architecture, Security Best Practices"
-            },
-            languages: [
-                { name: "English", level: "Professional Proficiency" },
-                { name: "Indonesian", level: "Native" }
-            ]
-        };
 
-        // Projects data
-        const projectsData = [
-            {
-                title: "PindahKerja",
-                description: "Job search and career transition platform helping professionals find their next opportunity",
-                technologies: ["Next.js", "React", "TypeScript", "Vercel"],
-                url: "https://pindahkerja.vercel.app/",
-                status: "Active"
+                profileData = await profileRes.json();
+                projectsData = await projectsRes.json();
+
+                loadHome();
+                loadProjects();
+                loadCV();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Failed to load data. Please ensure profile.json and projects.json are in the same directory.');
             }
-        ];
+        }
 
-        // Navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = link.getAttribute('href').substring(1);
-
-                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-
-                document.getElementById(target).classList.add('active');
-                link.classList.add('active');
-
-                window.scrollTo(0, 0);
+        function showError(message) {
+            document.querySelectorAll('.loading').forEach(el => {
+                el.innerHTML = `<div class="error">${message}</div>`;
             });
-        });
+        }
+
+        // Load home section
+        function loadHome() {
+            document.getElementById('home-name').textContent = profileData.name;
+            document.getElementById('home-title').textContent = profileData.title;
+            document.getElementById('home-summary').textContent = profileData.summary;
+
+            const contactsHtml = profileData.contacts.map(contact => {
+                if (contact.includes('@')) {
+                    return `<span>📧 <a href="mailto:${contact}">${contact}</a></span>`;
+                } else if (contact.includes('linkedin')) {
+                    return `<span>🔗 <a href="${contact}" target="_blank">LinkedIn</a></span>`;
+                } else if (contact.includes('+')) {
+                    return `<span>📱 ${contact}</span>`;
+                } else {
+                    return `<span>📍 ${contact}</span>`;
+                }
+            }).join('');
+
+            document.getElementById('home-contacts').innerHTML = contactsHtml;
+        }
 
         // Load projects
         function loadProjects() {
             const container = document.getElementById('projects-container');
-            container.innerHTML = projectsData.map(project => `
+
+            if (!projectsData.projects || projectsData.projects.length === 0) {
+                container.innerHTML = '<p>No projects available yet.</p>';
+                return;
+            }
+
+            container.innerHTML = projectsData.projects.map(project => `
                 <div class="project-card">
                     <h3>${project.title}</h3>
                     <p>${project.description}</p>
@@ -549,6 +526,11 @@
 
         // Download CV as PDF
         function downloadCV() {
+            if (!profileData) {
+                alert('CV data not loaded yet');
+                return;
+            }
+
             const cvContent = `
 RIZKI PERDANA
 Backend Engineer
@@ -587,9 +569,24 @@ ${profileData.languages.map(l => `${l.name}: ${l.level}`).join('\n')}
             URL.revokeObjectURL(url);
         }
 
+        // Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = link.getAttribute('href').substring(1);
+
+                document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+
+                document.getElementById(target).classList.add('active');
+                link.classList.add('active');
+
+                window.scrollTo(0, 0);
+            });
+        });
+
         // Initialize
-        loadProjects();
-        loadCV();
+        loadData();
     </script>
 </body>
 </html>

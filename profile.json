@@ -1,0 +1,17 @@
+{
+    "projects": [
+        {
+            "title": "PindahKerja",
+            "description": "Job search and career transition platform helping professionals find their next opportunity",
+            "technologies": [
+                "Next.js",
+                "React",
+                "TypeScript",
+                "Vercel"
+            ],
+            "url": "https://pindahkerja.vercel.app/",
+            "status": "Active",
+            "featured": true
+        }
+    ]
+}
