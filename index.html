@@ -405,28 +405,60 @@
         // Load JSON data
         async function loadData() {
             try {
-                const [profileRes, projectsRes] = await Promise.all([
-                    fetch('profile.json'),
-                    fetch('projects.json')
-                ]);
+                // Try multiple possible paths for the JSON files
+                const paths = [
+                    { profile: './profile.json', projects: './projects.json' },
+                    { profile: 'profile.json', projects: 'projects.json' },
+                    { profile: '/profile.json', projects: '/projects.json' }
+                ];
 
-                if (!profileRes.ok || !projectsRes.ok) {
-                    throw new Error('Failed to load data files');
+                let loaded = false;
+                let lastError = null;
+
+                for (const path of paths) {
+                    try {
+                        const [profileRes, projectsRes] = await Promise.all([
+                            fetch(path.profile),
+                            fetch(path.projects)
+                        ]);
+
+                        if (profileRes.ok && projectsRes.ok) {
+                            const profileJson = await profileRes.json();
+                            const projectsJson = await projectsRes.json();
+
+                            // Validate data structure
+                            if (profileJson && profileJson.name && projectsJson && projectsJson.projects) {
+                                profileData = profileJson;
+                                projectsData = projectsJson;
+                                loaded = true;
+                                break;
+                            }
+                        }
+                    } catch (e) {
+                        lastError = e;
+                        continue;
+                    }
                 }
 
-                profileData = await profileRes.json();
-                projectsData = await projectsRes.json();
+                if (!loaded) {
+                    throw new Error(`Failed to load JSON files. Last error: ${lastError?.message || 'Unknown error'}`);
+                }
 
                 loadHome();
                 loadProjects();
                 loadCV();
             } catch (error) {
                 console.error('Error loading data:', error);
-                showError('Failed to load data. Please ensure profile.json and projects.json are in the same directory.');
+                showError(`Failed to load data: ${error.message}. Make sure profile.json and projects.json are in the root directory.`);
             }
         }
 
         function showError(message) {
+            document.getElementById('home-name').textContent = 'Error Loading Data';
+            document.getElementById('home-title').textContent = '';
+            document.getElementById('home-summary').textContent = message;
+            document.getElementById('home-contacts').innerHTML = '';
+
             document.querySelectorAll('.loading').forEach(el => {
                 el.innerHTML = `<div class="error">${message}</div>`;
             });
@@ -434,94 +466,116 @@
 
         // Load home section
         function loadHome() {
-            document.getElementById('home-name').textContent = profileData.name;
-            document.getElementById('home-title').textContent = profileData.title;
-            document.getElementById('home-summary').textContent = profileData.summary;
+            if (!profileData) return;
 
-            const contactsHtml = profileData.contacts.map(contact => {
-                if (contact.includes('@')) {
-                    return `<span>📧 <a href="mailto:${contact}">${contact}</a></span>`;
-                } else if (contact.includes('linkedin')) {
-                    return `<span>🔗 <a href="${contact}" target="_blank">LinkedIn</a></span>`;
-                } else if (contact.includes('+')) {
-                    return `<span>📱 ${contact}</span>`;
-                } else {
-                    return `<span>📍 ${contact}</span>`;
-                }
-            }).join('');
+            document.getElementById('home-name').textContent = profileData.name || 'Name not found';
+            document.getElementById('home-title').textContent = profileData.title || '';
+            document.getElementById('home-summary').textContent = profileData.summary || '';
 
-            document.getElementById('home-contacts').innerHTML = contactsHtml;
+            if (profileData.contacts && Array.isArray(profileData.contacts)) {
+                const contactsHtml = profileData.contacts.map(contact => {
+                    if (contact.includes('@')) {
+                        return `<span>📧 <a href="mailto:${contact}">${contact}</a></span>`;
+                    } else if (contact.includes('linkedin')) {
+                        return `<span>🔗 <a href="${contact}" target="_blank">LinkedIn</a></span>`;
+                    } else if (contact.includes('+')) {
+                        return `<span>📱 ${contact}</span>`;
+                    } else {
+                        return `<span>📍 ${contact}</span>`;
+                    }
+                }).join('');
+
+                document.getElementById('home-contacts').innerHTML = contactsHtml;
+            }
         }
 
         // Load projects
         function loadProjects() {
             const container = document.getElementById('projects-container');
 
-            if (!projectsData.projects || projectsData.projects.length === 0) {
+            if (!projectsData || !projectsData.projects || projectsData.projects.length === 0) {
                 container.innerHTML = '<p>No projects available yet.</p>';
                 return;
             }
 
             container.innerHTML = projectsData.projects.map(project => `
                 <div class="project-card">
-                    <h3>${project.title}</h3>
-                    <p>${project.description}</p>
+                    <h3>${project.title || 'Untitled'}</h3>
+                    <p>${project.description || ''}</p>
                     <div class="project-tech">
-                        ${project.technologies.map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
+                        ${(project.technologies || []).map(tech => `<span class="tech-tag">${tech}</span>`).join('')}
                     </div>
-                    <a href="${project.url}" target="_blank" class="project-link">View Project →</a>
+                    ${project.url ? `<a href="${project.url}" target="_blank" class="project-link">View Project →</a>` : ''}
                 </div>
             `).join('');
         }
 
         // Load CV
         function loadCV() {
+            if (!profileData) return;
+
             // Experience
             const expContainer = document.getElementById('experience-container');
-            expContainer.innerHTML = profileData.experience.map(exp => `
-                <div class="experience-item">
-                    <div class="job-header">
-                        <div>
-                            <div class="job-title">${exp.title}</div>
-                            <div class="company">${exp.company} • ${exp.location}</div>
+            if (profileData.experience && Array.isArray(profileData.experience)) {
+                expContainer.innerHTML = profileData.experience.map(exp => `
+                    <div class="experience-item">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">${exp.title || ''}</div>
+                                <div class="company">${exp.company || ''} • ${exp.location || ''}</div>
+                            </div>
+                            <div class="period">${exp.period || ''}</div>
                         </div>
-                        <div class="period">${exp.period}</div>
+                        <ul class="achievements">
+                            ${(exp.achievements || []).map(achievement => `<li>${achievement}</li>`).join('')}
+                        </ul>
                     </div>
-                    <ul class="achievements">
-                        ${exp.achievements.map(achievement => `<li>${achievement}</li>`).join('')}
-                    </ul>
-                </div>
-            `).join('');
+                `).join('');
+            } else {
+                expContainer.innerHTML = '<p>No experience data available</p>';
+            }
 
             // Education
             const eduContainer = document.getElementById('education-container');
-            const edu = profileData.education;
-            eduContainer.innerHTML = `
-                <div class="education-item">
-                    <div class="job-header">
-                        <div>
-                            <div class="job-title">${edu.degree}</div>
-                            <div class="company">${edu.institution}</div>
+            if (profileData.education) {
+                const edu = profileData.education;
+                eduContainer.innerHTML = `
+                    <div class="education-item">
+                        <div class="job-header">
+                            <div>
+                                <div class="job-title">${edu.degree || ''}</div>
+                                <div class="company">${edu.institution || ''}</div>
+                            </div>
+                            <div class="period">${edu.period || ''}</div>
                         </div>
-                        <div class="period">${edu.period}</div>
                     </div>
-                </div>
-            `;
+                `;
+            } else {
+                eduContainer.innerHTML = '<p>No education data available</p>';
+            }
 
             // Skills
             const skillsContainer = document.getElementById('skills-container');
-            skillsContainer.innerHTML = Object.entries(profileData.skills).map(([category, skills]) => `
-                <div class="skill-category">
-                    <h4>${category}</h4>
-                    <p>${skills}</p>
-                </div>
-            `).join('');
+            if (profileData.skills && typeof profileData.skills === 'object') {
+                skillsContainer.innerHTML = Object.entries(profileData.skills).map(([category, skills]) => `
+                    <div class="skill-category">
+                        <h4>${category}</h4>
+                        <p>${skills}</p>
+                    </div>
+                `).join('');
+            } else {
+                skillsContainer.innerHTML = '<p>No skills data available</p>';
+            }
 
             // Languages
             const langContainer = document.getElementById('languages-container');
-            langContainer.innerHTML = profileData.languages.map(lang => `
-                <p><strong>${lang.name}:</strong> ${lang.level}</p>
-            `).join('');
+            if (profileData.languages && Array.isArray(profileData.languages)) {
+                langContainer.innerHTML = profileData.languages.map(lang => `
+                    <p><strong>${lang.name || ''}:</strong> ${lang.level || ''}</p>
+                `).join('');
+            } else {
+                langContainer.innerHTML = '<p>No language data available</p>';
+            }
         }
 
         // Download CV as PDF
@@ -536,28 +590,28 @@ RIZKI PERDANA
 Backend Engineer
 
 CONTACT
-${profileData.contacts.join('\n')}
+${(profileData.contacts || []).join('\n')}
 
 SUMMARY
-${profileData.summary}
+${profileData.summary || ''}
 
 EXPERIENCE
-${profileData.experience.map(exp => `
+${(profileData.experience || []).map(exp => `
 ${exp.title} at ${exp.company}
 ${exp.location} | ${exp.period}
-${exp.achievements.map(a => `• ${a}`).join('\n')}
+${(exp.achievements || []).map(a => `• ${a}`).join('\n')}
 `).join('\n')}
 
 EDUCATION
-${profileData.education.degree}
-${profileData.education.institution}
-${profileData.education.period}
+${profileData.education?.degree || ''}
+${profileData.education?.institution || ''}
+${profileData.education?.period || ''}
 
 SKILLS
-${Object.entries(profileData.skills).map(([cat, skills]) => `${cat}: ${skills}`).join('\n')}
+${Object.entries(profileData.skills || {}).map(([cat, skills]) => `${cat}: ${skills}`).join('\n')}
 
 LANGUAGES
-${profileData.languages.map(l => `${l.name}: ${l.level}`).join('\n')}
+${(profileData.languages || []).map(l => `${l.name}: ${l.level}`).join('\n')}
             `;
 
             const blob = new Blob([cvContent], { type: 'text/plain' });
