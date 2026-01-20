@@ -398,6 +398,7 @@
         </section>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
         let profileData = null;
         let projectsData = null;
@@ -585,42 +586,176 @@
                 return;
             }
 
-            const cvContent = `
-RIZKI PERDANA
-Backend Engineer
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
 
-CONTACT
-${(profileData.contacts || []).join('\n')}
+            let y = 20;
+            const lineHeight = 7;
+            const pageWidth = doc.internal.pageSize.width;
+            const margin = 20;
+            const maxWidth = pageWidth - (margin * 2);
 
-SUMMARY
-${profileData.summary || ''}
+            // Name
+            doc.setFontSize(24);
+            doc.setFont(undefined, 'bold');
+            doc.text(profileData.name || '', margin, y);
+            y += 10;
 
-EXPERIENCE
-${(profileData.experience || []).map(exp => `
-${exp.title} at ${exp.company}
-${exp.location} | ${exp.period}
-${(exp.achievements || []).map(a => `• ${a}`).join('\n')}
-`).join('\n')}
+            // Title
+            doc.setFontSize(14);
+            doc.setFont(undefined, 'normal');
+            doc.setTextColor(100);
+            doc.text(profileData.title || '', margin, y);
+            y += 12;
 
-EDUCATION
-${profileData.education?.degree || ''}
-${profileData.education?.institution || ''}
-${profileData.education?.period || ''}
+            // Contact Info
+            doc.setFontSize(10);
+            doc.setTextColor(60);
+            (profileData.contacts || []).forEach(contact => {
+                doc.text(contact, margin, y);
+                y += 5;
+            });
+            y += 8;
 
-SKILLS
-${Object.entries(profileData.skills || {}).map(([cat, skills]) => `${cat}: ${skills}`).join('\n')}
+            // Summary
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor(0);
+            doc.text('SUMMARY', margin, y);
+            y += 7;
 
-LANGUAGES
-${(profileData.languages || []).map(l => `${l.name}: ${l.level}`).join('\n')}
-            `;
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            doc.setTextColor(60);
+            const summaryLines = doc.splitTextToSize(profileData.summary || '', maxWidth);
+            doc.text(summaryLines, margin, y);
+            y += summaryLines.length * 5 + 8;
 
-            const blob = new Blob([cvContent], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'Rizki_Perdana_CV.txt';
-            a.click();
-            URL.revokeObjectURL(url);
+            // Experience
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor(0);
+            doc.text('EXPERIENCE', margin, y);
+            y += 7;
+
+            (profileData.experience || []).forEach(exp => {
+                if (y > 250) {
+                    doc.addPage();
+                    y = 20;
+                }
+
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'bold');
+                doc.setTextColor(0);
+                doc.text(exp.title || '', margin, y);
+                y += 6;
+
+                doc.setFontSize(10);
+                doc.setFont(undefined, 'normal');
+                doc.setTextColor(70, 154, 255);
+                doc.text(`${exp.company} • ${exp.location}`, margin, y);
+                y += 5;
+
+                doc.setTextColor(100);
+                doc.text(exp.period || '', margin, y);
+                y += 7;
+
+                doc.setTextColor(60);
+                (exp.achievements || []).forEach(achievement => {
+                    if (y > 270) {
+                        doc.addPage();
+                        y = 20;
+                    }
+                    const achLines = doc.splitTextToSize(`• ${achievement}`, maxWidth - 5);
+                    doc.text(achLines, margin + 3, y);
+                    y += achLines.length * 5;
+                });
+                y += 5;
+            });
+
+            // Education
+            if (y > 240) {
+                doc.addPage();
+                y = 20;
+            }
+
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor(0);
+            doc.text('EDUCATION', margin, y);
+            y += 7;
+
+            if (profileData.education) {
+                doc.setFontSize(11);
+                doc.setFont(undefined, 'bold');
+                doc.text(profileData.education.degree || '', margin, y);
+                y += 6;
+
+                doc.setFontSize(10);
+                doc.setFont(undefined, 'normal');
+                doc.setTextColor(70, 154, 255);
+                doc.text(profileData.education.institution || '', margin, y);
+                y += 5;
+
+                doc.setTextColor(100);
+                doc.text(profileData.education.period || '', margin, y);
+                y += 8;
+            }
+
+            // Skills
+            if (y > 200) {
+                doc.addPage();
+                y = 20;
+            }
+
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor(0);
+            doc.text('SKILLS', margin, y);
+            y += 7;
+
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            Object.entries(profileData.skills || {}).forEach(([category, skills]) => {
+                if (y > 270) {
+                    doc.addPage();
+                    y = 20;
+                }
+                doc.setTextColor(0);
+                doc.setFont(undefined, 'bold');
+                doc.text(category + ':', margin, y);
+                y += 5;
+
+                doc.setTextColor(60);
+                doc.setFont(undefined, 'normal');
+                const skillLines = doc.splitTextToSize(skills, maxWidth);
+                doc.text(skillLines, margin, y);
+                y += skillLines.length * 5 + 3;
+            });
+
+            // Languages
+            if (y > 250) {
+                doc.addPage();
+                y = 20;
+            }
+
+            y += 3;
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.setTextColor(0);
+            doc.text('LANGUAGES', margin, y);
+            y += 7;
+
+            doc.setFontSize(10);
+            doc.setFont(undefined, 'normal');
+            doc.setTextColor(60);
+            (profileData.languages || []).forEach(lang => {
+                doc.text(`${lang.name}: ${lang.level}`, margin, y);
+                y += 5;
+            });
+
+            // Save PDF
+            doc.save('Rizki_Perdana_CV.pdf');
         }
 
         // Navigation
