@@ -1,6 +1,6 @@
-## Rizki Perdana | Back End Developer
+## Rizki Perdana | Software Engineer
 ==========================
 
-Hello and welcome to the code for my personal site! This site certainly imperfect so i wil add more additional feature.
+Hello and welcome to the personal site repo! This site is already in perfect state and will pour more necessary project and experience in the future.
 
-Feel free to drop again sometimes!
+Thanks for checking, bye
