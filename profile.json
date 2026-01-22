@@ -1,19 +1,19 @@
 {
     "name": "Rizki Perdana",
-    "title": "Backend Engineer",
+    "title": "Software Engineer",
     "contacts": [
         "+62 8960 1361 061",
         "perdana.rizki16@gmail.com",
         "https://www.linkedin.com/in/rizkiperdana",
         "Yogyakarta, Indonesia"
     ],
-    "summary": "Backend Engineer with 6+ years of experience designing and building scalable distributed systems. Proven track record in leading technical initiatives, optimizing system performance, and driving product innovation. Expertise in system architecture, API development, database design, and cloud infrastructure. Strong background in AI integration and workflow automation with a focus on delivering robust, maintainable solutions.",
+    "summary": "Software Engineer with 6+ years of experience designing and building scalable distributed systems. Proven track record in leading technical initiatives, optimizing system performance, and driving product innovation. Expertise in system architecture, API development, database design, and cloud infrastructure. Strong background in AI integration and workflow automation with a focus on delivering robust, maintainable solutions.",
     "experience": [
         {
             "company": "SourceSage",
-            "title": "Backend Engineer",
+            "title": "Software Engineer",
             "location": "Singapore",
-            "period": "Mar 2022 – Present",
+            "period": "Mar 2022 - Present",
             "achievements": [
                 "Architected and implemented high-performance RESTful API services handling millions of requests daily for enterprise B2B integrations",
                 "Led the design of system architecture improvements that increased overall platform reliability by 40% and reduced latency by 60%",
@@ -26,7 +26,7 @@
             "company": "PT. Gamatechno Indonesia",
             "title": "Backend Engineer",
             "location": "Yogyakarta, Indonesia",
-            "period": "Feb 2020 – Feb 2022",
+            "period": "Feb 2020 - Feb 2022",
             "achievements": [
                 "Designed and developed microservices architecture supporting multiple client applications with diverse requirements",
                 "Created comprehensive API documentation and contracts that improved cross-team collaboration and reduced integration time by 30%",
@@ -37,7 +37,7 @@
             "company": "PT. Diginet Media",
             "title": "Software Engineer",
             "location": "Yogyakarta, Indonesia",
-            "period": "Sep 2014 – Jan 2016",
+            "period": "Sep 2014 - Jan 2016",
             "achievements": [
                 "Developed full-stack web applications for various clients, delivering projects on time and meeting business requirements",
                 "Built and maintained RESTful API services supporting web and mobile applications with thousands of daily users",
@@ -49,7 +49,7 @@
         "institution": "Yogyakarta State University",
         "degree": "Bachelor of Computer Science",
         "location": "Yogyakarta, Indonesia",
-        "period": "2016 – 2020"
+        "period": "2016 - 2020"
     },
     "skills": {
         "Programming Languages": "Python, Ruby, JavaScript, PHP, SQL, Shell Scripting",

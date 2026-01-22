@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rizki Perdana - Backend Engineer</title>
+    <title>Rizki Perdana - Software Engineer</title>
     <style>
         body {
             font-family: sans-serif;
@@ -14,6 +14,34 @@
             margin: 40px auto;
             padding: 0 20px;
             font-size: 16px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body.dark {
+            background: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 0.6em 1.2em;
+            font-size: 0.9em;
+            cursor: pointer;
+            z-index: 1000;
+        }
+
+        .dark .theme-toggle {
+            background: #fff;
+            color: #000;
+        }
+
+        .theme-toggle:hover {
+            opacity: 0.8;
         }
 
         h1 {
@@ -27,6 +55,10 @@
             margin: 2em 0 0.5em 0;
             border-bottom: 2px solid #000;
             padding-bottom: 0.2em;
+        }
+
+        .dark h2 {
+            border-bottom-color: #e0e0e0;
         }
 
         h3 {
@@ -52,6 +84,14 @@
             color: #551a8b;
         }
 
+        .dark a {
+            color: #6c9eff;
+        }
+
+        .dark a:visited {
+            color: #b18fd6;
+        }
+
         ul {
             margin: 0.5em 0;
             padding-left: 2em;
@@ -65,6 +105,10 @@
             font-size: 1.3em;
             color: #666;
             margin: 0 0 1em 0;
+        }
+
+        .dark .subtitle {
+            color: #999;
         }
 
         .contact {
@@ -82,9 +126,17 @@
             border: 1px solid #ccc;
         }
 
+        .dark .project {
+            border-color: #444;
+        }
+
         .tech-stack {
             margin: 0.5em 0;
             color: #666;
+        }
+
+        .dark .tech-stack {
+            color: #999;
         }
 
         .job {
@@ -98,6 +150,10 @@
         .period {
             color: #666;
             font-style: italic;
+        }
+
+        .dark .period {
+            color: #999;
         }
 
         .skill-category {
@@ -118,6 +174,15 @@
             background: #333;
         }
 
+        .dark button {
+            background: #fff;
+            color: #000;
+        }
+
+        .dark button:hover {
+            background: #ccc;
+        }
+
         .loading, .error {
             color: #666;
             font-style: italic;
@@ -127,14 +192,28 @@
             color: #c00;
         }
 
+        .dark .loading {
+            color: #999;
+        }
+
+        .dark .error {
+            color: #ff6b6b;
+        }
+
         hr {
             border: none;
             border-top: 1px solid #ccc;
             margin: 3em 0;
         }
+
+        .dark hr {
+            border-top-color: #444;
+        }
     </style>
 </head>
-<body>
+<body class="dark">
+    <button class="theme-toggle" onclick="toggleTheme()">☀️ Light</button>
+
     <!-- HOME SECTION -->
     <h1 id="name">Loading...</h1>
     <div id="title" class="subtitle"></div>
@@ -179,6 +258,41 @@
     <script>
         let profileData = null;
         let projectsData = null;
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+
+            if (body.classList.contains('dark')) {
+                body.classList.remove('dark');
+                button.textContent = '🌙 Dark';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.add('dark');
+                button.textContent = '☀️ Light';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize theme
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+
+            // Default to dark mode if no preference saved
+            if (savedTheme === 'light') {
+                body.classList.remove('dark');
+                button.textContent = '🌙 Dark Mode';
+            } else {
+                body.classList.add('dark');
+                button.textContent = '☀️ Light Mode';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load data functions
 
         async function loadData() {
             try {
@@ -515,6 +629,7 @@
             doc.save('Rizki_Perdana_CV.pdf');
         }
 
+        initTheme();
         loadData();
     </script>
 </body>
