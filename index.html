@@ -284,10 +284,10 @@
             // Default to dark mode if no preference saved
             if (savedTheme === 'light') {
                 body.classList.remove('dark');
-                button.textContent = '🌙 Dark Mode';
+                button.textContent = '🌙 Dark';
             } else {
                 body.classList.add('dark');
-                button.textContent = '☀️ Light Mode';
+                button.textContent = '☀️ Light';
                 localStorage.setItem('theme', 'dark');
             }
         }
