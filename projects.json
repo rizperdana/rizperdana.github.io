@@ -12,6 +12,22 @@
             "url": "https://pindahkerja.vercel.app/",
             "status": "Active",
             "featured": true
+        },
+        {
+            "title": "Wikwok",
+            "description": "A high-engagement, vertical-scroll discovery engine that transforms Wikipedia content into a localized, social-media-style learning experience.",
+            "technologies": [
+                "Next.js 15",
+                "React Compiler",
+                "TypeScript",
+                "Supabase",
+                "TanStack Query",
+                "Framer Motion",
+                "Vercel Edge"
+            ],
+            "url": "https://wik-wok.vercel.app/",
+            "status": "Active",
+            "featured": true
         }
     ]
 }
