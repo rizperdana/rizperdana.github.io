@@ -5,9 +5,10 @@
         "+62 8960 1361 061",
         "perdana.rizki16@gmail.com",
         "https://www.linkedin.com/in/rizkiperdana",
+        "https://rizperdana.github.io/",
         "Yogyakarta, Indonesia"
     ],
-    "summary": "Software Engineer with 6+ years of experience designing and building scalable distributed systems. Proven track record in leading technical initiatives, optimizing system performance, and driving product innovation. Expertise in system architecture, API development, database design, and cloud infrastructure. Strong background in AI integration and workflow automation with a focus on delivering robust, maintainable solutions.",
+    "summary": "Software Engineer with 6+ years of experience delivering end-to-end web solutions. Expert in full-stack development, designing scalable APIs, crafting responsive UIs, and managing automated deployments. Proven track record in optimizing system performance and integrating AI to drive product innovation.",
     "experience": [
         {
             "company": "SourceSage",
@@ -15,22 +16,22 @@
             "location": "Singapore",
             "period": "Mar 2022 - Present",
             "achievements": [
-                "Architected and implemented high-performance RESTful API services handling millions of requests daily for enterprise B2B integrations",
-                "Led the design of system architecture improvements that increased overall platform reliability by 40% and reduced latency by 60%",
-                "Spearheaded the integration of AI capabilities and large language models into core product features, enabling advanced automation and intelligence",
-                "Established comprehensive CI/CD practices and automated testing strategies that reduced deployment failures by 75% and deployment time by 50%",
-                "Mentored junior engineers and established coding standards and best practices across the engineering organization"
+                "Architected end-to-end high-performance systems and RESTful APIs handling millions of daily B2B requests.",
+                "Enhanced user interfaces and system architecture, increasing platform reliability by 40% and reducing latency by 60%.",
+                "Integrated AI and large language models into core features to drive advanced automation and product intelligence.",
+                "Streamlined CI/CD pipelines and automated deployment strategies, reducing delivery time by 50% and failures by 75%.",
+                "Mentored engineering teams on full-stack best practices, coding standards, and scalable system design."
             ]
         },
         {
             "company": "PT. Gamatechno Indonesia",
-            "title": "Backend Engineer",
+            "title": "Software Engineer",
             "location": "Yogyakarta, Indonesia",
             "period": "Feb 2020 - Feb 2022",
             "achievements": [
-                "Designed and developed microservices architecture supporting multiple client applications with diverse requirements",
-                "Created comprehensive API documentation and contracts that improved cross-team collaboration and reduced integration time by 30%",
-                "Collaborated with frontend teams to define API specifications and ensure seamless integration between client and server components"
+                "Developed full-stack microservices and intuitive interfaces supporting diverse client applications and requirements.",
+                "Engineered robust API contracts and deployment workflows that improved cross-team delivery efficiency by 30%.",
+                "Synchronized frontend UI components with backend logic to ensure seamless integration and high-performance user experiences."
             ]
         },
         {
@@ -39,9 +40,9 @@
             "location": "Yogyakarta, Indonesia",
             "period": "Sep 2014 - Jan 2016",
             "achievements": [
-                "Developed full-stack web applications for various clients, delivering projects on time and meeting business requirements",
-                "Built and maintained RESTful API services supporting web and mobile applications with thousands of daily users",
-                "Implemented secure authentication and authorization systems protecting sensitive user data and business information"
+                "Built and deployed full-stack web applications featuring dynamic UIs and secure, scalable backend architectures.",
+                "Developed RESTful API services and managed deployments for platforms supporting thousands of daily active users.",
+                "Implemented secure authentication and data protection systems across the entire application stack."
             ]
         }
     ],
@@ -53,12 +54,12 @@
     },
     "skills": {
         "Programming Languages": "Python, Ruby, JavaScript, PHP, SQL, Shell Scripting",
-        "System Architecture & Design": "Microservices, REST APIs, Event-Driven Architecture, Distributed Systems, System Design Patterns",
-        "Database Technologies": "Relational Databases (MySQL, PostgreSQL), NoSQL Databases, Database Optimization, Data Modeling, Transaction Management",
-        "Cloud & DevOps": "Containerization, CI/CD Pipelines, Infrastructure as Code, Cloud Platforms, Automated Testing, Monitoring & Logging",
-        "AI & Intelligent Systems": "Large Language Models, AI Integration, Workflow Automation, Natural Language Processing, Intelligent Systems Design",
-        "Performance & Scalability": "System Optimization, Caching Strategies, Load Balancing, Performance Monitoring",
-        "Development Practices": "Agile Methodologies, Code Review, Technical Documentation, System Architecture, Security Best Practices"
+        "Full-Stack Development": "UI/UX Implementation, REST APIs, Microservices, Event-Driven Architecture, Distributed Systems",
+        "Database Technologies": "Relational Databases (MySQL, PostgreSQL), NoSQL, Data Modeling, Transaction Management",
+        "Deployment & DevOps": "CI/CD Pipelines, Containerization, Infrastructure as Code, Cloud Platforms, Automated Testing",
+        "AI & Intelligent Systems": "LLM Integration, Workflow Automation, NLP, Intelligent Systems Design",
+        "Performance & Scalability": "System Optimization, Caching, Load Balancing, Performance Monitoring",
+        "Development Practices": "Agile, Code Review, Technical Documentation, Security Best Practices"
     },
     "languages": [
         {

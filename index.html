@@ -298,12 +298,8 @@
     <hr>
 
     <footer style="text-align: center; margin-top: 3em; padding-top: 2em; border-top: 2px dashed var(--fg);">
-        <p style="font-size: 0.9em; opacity: 0.7;">
-            SYSTEM_VERSION: <span id="version">1.0.0</span> |
-            LAST_UPDATED: <span id="last-updated">Loading...</span>
-        </p>
         <p style="font-size: 0.8em; margin-top: 1em;">
-            BUILT_WITH: HTML, CSS, JS | NO_FRAMEWORKS
+            BUILT_WITH: HTML, CSS, and ❤️
         </p>
     </footer>
 
@@ -417,6 +413,8 @@
                 const contactsHtml = profileData.contacts.map(contact => {
                     if (contact.includes('@')) {
                         return `<span class="contact-item">📧 <a href="mailto:${contact}">${contact}</a></span>`;
+                    } else if (contact.includes('github.io')) {
+                        return `<span class="contact-item">🌐 <a href="${contact}" target="_blank">Site</a></span>`;
                     } else if (contact.includes('linkedin')) {
                         return `<span class="contact-item">🔗 <a href="${contact}" target="_blank">LinkedIn</a></span>`;
                     } else if (contact.includes('+')) {
@@ -526,7 +524,7 @@
 
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'pt', 'a4');
-            
+
             // Configuration for ATS compliance
             const margin = 50;
             const pageWidth = doc.internal.pageSize.width;
@@ -534,9 +532,9 @@
             const lineHeight = 14;
             const sectionSpacing = 20;
             const subsectionSpacing = 12;
-            
+
             let y = 60;
-            
+
             // Helper function to check and handle page breaks
             function checkPageBreak(requiredSpace) {
                 if (y + requiredSpace > doc.internal.pageSize.height - margin) {
@@ -546,14 +544,14 @@
                 }
                 return false;
             }
-            
+
             // Helper function to calculate text height
             function getTextHeight(text, fontSize, width) {
                 doc.setFontSize(fontSize);
                 const lines = doc.splitTextToSize(text, width);
                 return lines.length * lineHeight;
             }
-            
+
             // Helper function to write wrapped text
             function writeWrapped(text, x, fontSize, width) {
                 doc.setFontSize(fontSize);
@@ -562,47 +560,47 @@
                 y += lines.length * lineHeight;
                 return lines.length;
             }
-            
+
             // Header - Name (ATS-friendly, no special formatting)
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(24);
             doc.text(profileData.name.toUpperCase() || '', margin, y);
             y += 28;
-            
+
             // Title
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(12);
             doc.text(profileData.title || '', margin, y);
             y += 18;
-            
+
             // Contact Info - Single line, comma separated for ATS
             const contactLine = (profileData.contacts || []).join(' | ');
             doc.setFontSize(10);
             writeWrapped(contactLine, margin, 10, maxWidth);
             y += sectionSpacing;
-            
+
             // Horizontal separator
             doc.setLineWidth(0.5);
             doc.line(margin, y, pageWidth - margin, y);
             y += sectionSpacing;
-            
+
             // Summary Section
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(12);
             doc.text('SUMMARY', margin, y);
             y += subsectionSpacing;
-            
+
             doc.setFont('helvetica', 'normal');
             doc.setFontSize(10);
             writeWrapped(profileData.summary || '', margin, 10, maxWidth);
             y += sectionSpacing;
-            
+
             // Experience Section
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(12);
             doc.text('PROFESSIONAL EXPERIENCE', margin, y);
             y += subsectionSpacing;
-            
+
             if (profileData.experience && profileData.experience.length > 0) {
                 profileData.experience.forEach((exp, index) => {
                     // Calculate space needed for this job entry
@@ -610,47 +608,47 @@
                     entryHeight += lineHeight; // Title line
                     entryHeight += lineHeight; // Company line
                     entryHeight += lineHeight; // Date line
-                    
+
                     // Calculate height for achievements
                     (exp.achievements || []).forEach(achievement => {
                         entryHeight += getTextHeight('\u2022 ' + achievement, 10, maxWidth - 10);
                     });
                     entryHeight += subsectionSpacing;
-                    
+
                     // Check if we need a page break before this job entry
                     if (y + entryHeight > doc.internal.pageSize.height - margin) {
                         doc.addPage();
                         y = margin;
                     }
-                    
+
                     // Job Title
                     doc.setFont('helvetica', 'bold');
                     doc.setFontSize(11);
                     doc.text(exp.title || '', margin, y);
                     y += lineHeight;
-                    
+
                     // Company and Location
                     doc.setFont('helvetica', 'normal');
                     doc.setFontSize(10);
                     const companyText = `${exp.company} | ${exp.location || ''}`;
                     doc.text(companyText, margin, y);
                     y += lineHeight;
-                    
+
                     // Period
                     doc.text(exp.period || '', margin, y);
                     y += lineHeight;
-                    
+
                     // Achievements
                     doc.setFontSize(10);
                     (exp.achievements || []).forEach(achievement => {
                         // Check if we need page break for individual achievement
                         const achievementHeight = getTextHeight('\u2022 ' + achievement, 10, maxWidth - 10);
                         checkPageBreak(achievementHeight + lineHeight);
-                        
+
                         writeWrapped('\u2022 ' + achievement, margin + 10, 10, maxWidth - 10);
                         y += 4; // Small extra spacing between bullets
                     });
-                    
+
                     y += subsectionSpacing;
                 });
             } else {
@@ -659,30 +657,30 @@
                 doc.text('No experience data available', margin, y);
                 y += sectionSpacing;
             }
-            
+
             // Education Section
             checkPageBreak(80);
-            
+
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(12);
             doc.text('EDUCATION', margin, y);
             y += subsectionSpacing;
-            
+
             if (profileData.education) {
                 const edu = profileData.education;
-                
+
                 // Degree
                 doc.setFont('helvetica', 'bold');
                 doc.setFontSize(11);
                 doc.text(edu.degree || '', margin, y);
                 y += lineHeight;
-                
+
                 // Institution
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(10);
                 doc.text(edu.institution || '', margin, y);
                 y += lineHeight;
-                
+
                 // Period
                 doc.text(edu.period || '', margin, y);
                 y += sectionSpacing;
@@ -692,35 +690,35 @@
                 doc.text('No education data available', margin, y);
                 y += sectionSpacing;
             }
-            
+
             // Skills Section
             checkPageBreak(100);
-            
+
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(12);
             doc.text('TECHNICAL SKILLS', margin, y);
             y += subsectionSpacing;
-            
+
             if (profileData.skills && typeof profileData.skills === 'object') {
                 Object.entries(profileData.skills).forEach(([category, skills]) => {
                     const categoryText = category + ': ';
                     const skillsText = skills;
-                    
+
                     // Check available space
                     const totalHeight = getTextHeight(categoryText + skillsText, 10, maxWidth) + 6;
                     checkPageBreak(totalHeight);
-                    
+
                     // Category name
                     doc.setFont('helvetica', 'bold');
                     doc.setFontSize(10);
                     doc.text(categoryText, margin, y);
-                    
+
                     // Skills - combined on same line if possible, otherwise wrapped
                     doc.setFont('helvetica', 'normal');
                     const categoryWidth = doc.getTextWidth(categoryText);
                     const skillsWidth = maxWidth - categoryWidth;
                     const skillLines = doc.splitTextToSize(skillsText, skillsWidth);
-                    
+
                     if (skillLines.length === 1) {
                         // Fits on one line
                         doc.text(skillsText, margin + categoryWidth, y);
@@ -730,10 +728,10 @@
                         doc.text(skillLines, margin, y + lineHeight);
                         y += (skillLines.length + 1) * lineHeight;
                     }
-                    
+
                     y += 6; // Spacing between skill categories
                 });
-                
+
                 y += sectionSpacing - 6;
             } else {
                 doc.setFont('helvetica', 'normal');
@@ -741,20 +739,20 @@
                 doc.text('No skills data available', margin, y);
                 y += sectionSpacing;
             }
-            
+
             // Languages Section
             checkPageBreak(50);
-            
+
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(12);
             doc.text('LANGUAGES', margin, y);
             y += subsectionSpacing;
-            
+
             if (profileData.languages && profileData.languages.length > 0) {
                 const languagesText = profileData.languages
                     .map(lang => `${lang.name}: ${lang.level}`)
                     .join(' | ');
-                
+
                 doc.setFont('helvetica', 'normal');
                 doc.setFontSize(10);
                 writeWrapped(languagesText, margin, 10, maxWidth);
@@ -763,13 +761,10 @@
                 doc.setFontSize(10);
                 doc.text('No language data available', margin, y);
             }
-            
+
             // Save the PDF
             doc.save('Rizki_Perdana_CV.pdf');
         }
-
-        // Set last updated date
-        document.getElementById('last-updated').textContent = new Date().toLocaleDateString();
 
         initTheme();
         loadData();
