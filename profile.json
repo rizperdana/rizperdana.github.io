@@ -54,10 +54,11 @@
     },
     "skills": {
         "Programming Languages": "Python, Ruby, JavaScript, PHP, SQL, Shell Scripting",
-        "Full-Stack Development": "UI/UX Implementation, REST APIs, Microservices, Event-Driven Architecture, Distributed Systems",
+        "Frontend Development": "React, Vue.js, UI/UX Implementation, Responsive Design, Component Architecture",
+        "Full-Stack Development": "REST APIs, Microservices, Event-Driven Architecture, Distributed Systems",
         "Database Technologies": "Relational Databases (MySQL, PostgreSQL), NoSQL, Data Modeling, Transaction Management",
         "Deployment & DevOps": "CI/CD Pipelines, Containerization, Infrastructure as Code, Cloud Platforms, Automated Testing",
-        "AI & Intelligent Systems": "LLM Integration, Workflow Automation, NLP, Intelligent Systems Design",
+        "AI & Machine Learning": "LLM Integration, OpenCLAW, RAG (Retrieval-Augmented Generation), AI Programming, NLP, Workflow Automation, Intelligent Systems Design",
         "Performance & Scalability": "System Optimization, Caching, Load Balancing, Performance Monitoring",
         "Development Practices": "Agile, Code Review, Technical Documentation, Security Best Practices"
     },

@@ -15,7 +15,7 @@
   --flexoki-muted: #B7B5AC;
   --flexoki-subtle: #6F6E69;
   
-  /* Flexoki Accent Colors (400 = light, 600 = dark) */
+  /* Flexoki Dark Accent Colors */
   --flexoki-red: #D14D41;
   --flexoki-red-dark: #AF3029;
   --flexoki-orange: #DA702C;
@@ -34,11 +34,65 @@
   --flexoki-magenta-dark: #A02F6F;
 }
 
+/* Flexoki Light Theme */
+[data-theme="light"] {
+  /* Flexoki Light Base Colors */
+  --flexoki-bg: #FAFAF8;
+  --flexoki-bg-2: #F0EFEC;
+  --flexoki-bg-3: #E6E4DE;
+  --flexoki-bg-4: #D4D1C9;
+  
+  /* Text colors */
+  --flexoki-text: #2D2B27;
+  --flexoki-muted: #5C5850;
+  --flexoki-subtle: #908E87;
+  
+  /* Flexoki Light Accent Colors (darker variants for contrast) */
+  --flexoki-red: #C43C30;
+  --flexoki-red-dark: #D14D41;
+  --flexoki-orange: #C35E1E;
+  --flexoki-orange-dark: #DA702C;
+  --flexoki-yellow: #A8850E;
+  --flexoki-yellow-dark: #D0A215;
+  --flexoki-green: #6E8130;
+  --flexoki-green-dark: #879A39;
+  --flexoki-cyan: #2E8A82;
+  --flexoki-cyan-dark: #3AA99F;
+  --flexoki-blue: #356A9A;
+  --flexoki-blue-dark: #4385BE;
+  --flexoki-purple: #7166A5;
+  --flexoki-purple-dark: #8B7EC8;
+  --flexoki-magenta: #A94E7A;
+  --flexoki-magenta-dark: #CE5D97;
+}
+
 /* Base styles */
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   background-color: var(--flexoki-bg);
   color: var(--flexoki-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme toggle button */
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  background: var(--flexoki-bg-2);
+  border: 1px solid var(--flexoki-bg-3);
+  color: var(--flexoki-text);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--flexoki-bg-3);
+  border-color: var(--flexoki-blue);
 }
 
 /* Smooth scrolling */
