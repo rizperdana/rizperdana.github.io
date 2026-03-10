@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CV | Rizki Perdana</title>
+  
+  <!-- Tailwind CSS + DaisyUI CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            flexoki: {
+              bg: '#1C1B1A',
+              'bg-2': '#282726',
+              'bg-3': '#403E3C',
+              'bg-4': '#575653',
+              text: '#CECDC3',
+              muted: '#B7B5AC',
+              subtle: '#6F6E69',
+              primary: '#4385BE',
+              'primary-dark': '#205EA6',
+              secondary: '#8B7EC8',
+              'secondary-dark': '#5E409D',
+              accent: '#D14D41',
+              'accent-dark': '#AF3029',
+              info: '#3AA99F',
+              'info-dark': '#24837B',
+              success: '#879A39',
+              'success-dark': '#66800B',
+              warning: '#D0A215',
+              'warning-dark': '#AD8301',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-flexoki-bg min-h-screen text-flexoki-text">
+  
+  <!-- Glass Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-flexoki-bg/85 border-b border-white/5">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <a href="../index.html" class="text-xl font-bold text-flexoki-text hover:text-flexoki-primary transition-colors">
+          Rizki Perdana
+        </a>
+        <div class="flex items-center gap-6">
+          <a href="../index.html" class="text-flexoki-text/70 font-medium hover:text-flexoki-primary transition-colors">Home</a>
+          <a href="index.html" class="text-flexoki-primary font-medium">CV</a>
+          <a href="blog/index.html" class="text-flexoki-text/70 font-medium hover:text-flexoki-primary transition-colors">Blog</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 pt-28 pb-12 max-w-4xl">
+    
+    <!-- Decorative elements -->
+    <div class="fixed top-20 right-10 w-72 h-72 bg-flexoki-primary/10 rounded-full blur-3xl -z-10"></div>
+    <div class="fixed top-60 left-10 w-96 h-96 bg-flexoki-secondary/10 rounded-full blur-3xl -z-10"></div>
+    
+    <!-- Header -->
+    <header class="mb-10">
+      <div class="bg-gradient-to-br from-flexoki-bg-2/90 to-flexoki-bg/90 backdrop-blur-xl rounded-3xl p-8 border border-white/5">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+          <div>
+            <h1 class="text-3xl md:text-4xl font-bold text-flexoki-text mb-2" id="name">
+              Loading...
+            </h1>
+            <p class="text-xl text-flexoki-primary font-medium" id="title"></p>
+            <p class="text-flexoki-muted mt-4 max-w-xl" id="summary"></p>
+          </div>
+          <button onclick="downloadCV()" class="btn bg-flexoki-primary/20 border-flexoki-primary/30 text-flexoki-text hover:bg-flexoki-primary/30 hover:border-flexoki-primary/50 gap-2 shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download PDF
+          </button>
+        </div>
+        
+        <!-- Contact Info -->
+        <div class="flex flex-wrap gap-3 mt-6" id="contacts"></div>
+      </div>
+    </header>
+
+    <!-- Experience Section -->
+    <section class="mb-10">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="text-2xl font-bold text-flexoki-text">Experience</h2>
+        <div class="h-px flex-1 bg-gradient-to-r from-flexoki-primary to-transparent"></div>
+      </div>
+      
+      <div class="space-y-4" id="experience-container"></div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="mb-10">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="text-2xl font-bold text-flexoki-text">Projects</h2>
+        <div class="h-px flex-1 bg-gradient-to-r from-flexoki-success to-transparent"></div>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-4" id="projects-container"></div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="mb-10">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="text-2xl font-bold text-flexoki-text">Education</h2>
+        <div class="h-px flex-1 bg-gradient-to-r from-flexoki-secondary to-transparent"></div>
+      </div>
+      
+      <div id="education-container"></div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="mb-10">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="text-2xl font-bold text-flexoki-text">Skills</h2>
+        <div class="h-px flex-1 bg-gradient-to-r from-flexoki-accent to-transparent"></div>
+      </div>
+      
+      <div class="grid md:grid-cols-2 gap-4" id="skills-container"></div>
+    </section>
+
+    <!-- Languages Section -->
+    <section class="mb-10">
+      <div class="flex items-center gap-4 mb-6">
+        <h2 class="text-2xl font-bold text-flexoki-text">Languages</h2>
+        <div class="h-px flex-1 bg-gradient-to-r from-flexoki-info to-transparent"></div>
+      </div>
+      
+      <div class="flex flex-wrap gap-3" id="languages-container"></div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-8 mt-12">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-flexoki-subtle text-sm">
+        Built with 
+        <span class="text-flexoki-primary">DaisyUI</span> + 
+        <span class="text-flexoki-secondary">Tailwind</span>
+      </p>
+      <p class="text-flexoki-subtle text-xs mt-2">
+        © 2026 Rizki Perdana. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    let profileData = null;
+    let projectsData = null;
+
+    async function loadData() {
+      try {
+        const [profileRes, projectsRes] = await Promise.all([
+          fetch('../profile.json'),
+          fetch('../projects.json')
+        ]);
+
+        profileData = await profileRes.json();
+        projectsData = await projectsRes.json();
+        
+        loadCV();
+        loadProjects();
+      } catch (error) {
+        console.error('Error loading data:', error);
+        document.getElementById('name').textContent = 'Error Loading Data';
+      }
+    }
+
+    function loadCV() {
+      if (!profileData) return;
+
+      document.getElementById('name').textContent = profileData.name || '';
+      document.getElementById('title').textContent = profileData.title || '';
+      document.getElementById('summary').textContent = profileData.summary || '';
+
+      // Contacts
+      if (profileData.contacts && Array.isArray(profileData.contacts)) {
+        const contactsHtml = profileData.contacts.map(contact => {
+          let icon = '📍';
+          let href = '#';
+          
+          if (contact.includes('@')) {
+            icon = '✉️';
+            href = `mailto:${contact}`;
+          } else if (contact.includes('linkedin')) {
+            icon = '💼';
+            href = contact;
+          } else if (contact.includes('github.io')) {
+            icon = '🌐';
+            href = contact;
+          } else if (contact.includes('+')) {
+            icon = '📱';
+          }
+          
+          if (href === '#') {
+            return `<span class="px-3 py-2 rounded-full bg-white/5 border border-white/10 text-sm">${icon} ${contact}</span>`;
+          }
+          return `<a href="${href}" target="_blank" class="px-3 py-2 rounded-full bg-white/5 border border-white/10 text-sm hover:bg-flexoki-primary/20 hover:border-flexoki-primary/30 transition-all">${icon} ${contact}</a>`;
+        }).join('');
+        document.getElementById('contacts').innerHTML = contactsHtml;
+      }
+
+      // Experience
+      const expContainer = document.getElementById('experience-container');
+      if (profileData.experience && Array.isArray(profileData.experience)) {
+        expContainer.innerHTML = profileData.experience.map((exp, index) => `
+          <div class="bg-gradient-to-br from-flexoki-bg-2/60 to-flexoki-bg/60 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:border-flexoki-primary/20 transition-all">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2 mb-4">
+              <div>
+                <h3 class="text-lg font-bold text-flexoki-text">${exp.title || ''}</h3>
+                <p class="text-flexoki-primary font-medium">@ ${exp.company || ''}</p>
+              </div>
+              <div class="text-right">
+                <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm">${exp.location || ''}</span>
+                <p class="text-sm text-flexoki-subtle mt-1">${exp.period || ''}</p>
+              </div>
+            </div>
+            <ul class="space-y-2">
+              ${(exp.achievements || []).map(achievement => `
+                <li class="flex items-start gap-2 text-flexoki-muted">
+                  <span class="text-flexoki-primary mt-1">▸</span>
+                  <span>${achievement}</span>
+                </li>
+              `).join('')}
+            </ul>
+          </div>
+        `).join('');
+      }
+
+      // Education
+      const eduContainer = document.getElementById('education-container');
+      if (profileData.education) {
+        const edu = profileData.education;
+        eduContainer.innerHTML = `
+          <div class="bg-gradient-to-br from-flexoki-bg-2/60 to-flexoki-bg/60 backdrop-blur-sm rounded-2xl p-6 border border-white/5">
+            <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-2">
+              <div>
+                <h3 class="text-lg font-bold text-flexoki-text">${edu.degree || ''}</h3>
+                <p class="text-flexoki-secondary font-medium">${edu.institution || ''}</p>
+              </div>
+              <div class="text-right">
+                <span class="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm">${edu.location || ''}</span>
+                <p class="text-sm text-flexoki-subtle mt-1">${edu.period || ''}</p>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      // Skills
+      const skillsContainer = document.getElementById('skills-container');
+      if (profileData.skills && typeof profileData.skills === 'object') {
+        skillsContainer.innerHTML = Object.entries(profileData.skills).map(([category, skills]) => `
+          <div class="bg-gradient-to-br from-flexoki-bg-2/40 to-flexoki-bg/40 rounded-xl p-5 border border-white/5">
+            <h3 class="text-sm font-bold text-flexoki-primary uppercase tracking-wider mb-3">${category}</h3>
+            <p class="text-flexoki-text">${skills}</p>
+          </div>
+        `).join('');
+      }
+
+      // Languages
+      const langContainer = document.getElementById('languages-container');
+      if (profileData.languages && Array.isArray(profileData.languages)) {
+        langContainer.innerHTML = profileData.languages.map(lang => `
+          <div class="px-4 py-2 rounded-xl bg-white/5 border border-white/10">
+            <span class="text-flexoki-text font-medium">${lang.name || ''}</span>
+            <span class="text-flexoki-subtle text-sm ml-2">— ${lang.level || ''}</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    function loadProjects() {
+      const container = document.getElementById('projects-container');
+      
+      if (!projectsData || !projectsData.projects || projectsData.projects.length === 0) {
+        container.innerHTML = '<p class="text-flexoki-muted">No projects available.</p>';
+        return;
+      }
+
+      container.innerHTML = projectsData.projects.map(project => `
+        <div class="bg-gradient-to-br from-flexoki-bg-2/40 to-flexoki-bg/40 rounded-xl p-5 border border-white/5 hover:border-flexoki-success/30 transition-all">
+          <h3 class="text-lg font-bold text-flexoki-text mb-2">${project.title || 'Untitled'}</h3>
+          <p class="text-flexoki-muted text-sm mb-3">${project.description || ''}</p>
+          <div class="flex flex-wrap gap-2 mb-3">
+            ${(project.technologies || []).slice(0, 4).map(tech => 
+              `<span class="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-flexoki-success">${tech}</span>`
+            ).join('')}
+          </div>
+          ${project.url ? `
+            <a href="${project.url}" target="_blank" class="text-flexoki-success hover:text-flexoki-warning text-sm inline-flex items-center gap-1">
+              View Project 
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    function downloadCV() {
+      if (!profileData) {
+        alert('CV data not loaded yet');
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF('p', 'pt', 'a4');
+
+      const margin = 50;
+      const pageWidth = doc.internal.pageSize.width;
+      const maxWidth = pageWidth - (margin * 2);
+      const lineHeight = 14;
+      const sectionSpacing = 20;
+      const subsectionSpacing = 12;
+
+      let y = 60;
+
+      function checkPageBreak(requiredSpace) {
+        if (y + requiredSpace > doc.internal.pageSize.height - margin) {
+          doc.addPage();
+          y = margin;
+          return true;
+        }
+        return false;
+      }
+
+      function getTextHeight(text, fontSize, width) {
+        doc.setFontSize(fontSize);
+        const lines = doc.splitTextToSize(text, width);
+        return lines.length * lineHeight;
+      }
+
+      function writeWrapped(text, x, fontSize, width) {
+        doc.setFontSize(fontSize);
+        const lines = doc.splitTextToSize(text, width);
+        doc.text(lines, x, y);
+        y += lines.length * lineHeight;
+        return lines.length;
+      }
+
+      // Header - Name
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(24);
+      doc.setTextColor(28, 27, 26);
+      doc.text(profileData.name?.toUpperCase() || '', margin, y);
+      y += 28;
+
+      // Title
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(12);
+      doc.setTextColor(67, 133, 190);
+      doc.text(profileData.title || '', margin, y);
+      y += 18;
+
+      // Contact Info
+      const contactLine = (profileData.contacts || []).join(' | ');
+      doc.setFontSize(10);
+      doc.setTextColor(111, 110, 105);
+      writeWrapped(contactLine, margin, 10, maxWidth);
+      y += sectionSpacing;
+
+      // Horizontal separator
+      doc.setDrawColor(206, 205, 195);
+      doc.setLineWidth(0.5);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += sectionSpacing;
+
+      // Summary Section
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.setTextColor(28, 27, 26);
+      doc.text('SUMMARY', margin, y);
+      y += subsectionSpacing;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(10);
+      writeWrapped(profileData.summary || '', margin, 10, maxWidth);
+      y += sectionSpacing;
+
+      // Experience Section
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text('PROFESSIONAL EXPERIENCE', margin, y);
+      y += subsectionSpacing;
+
+      if (profileData.experience && profileData.experience.length > 0) {
+        profileData.experience.forEach((exp) => {
+          let entryHeight = lineHeight + lineHeight + lineHeight;
+          (exp.achievements || []).forEach(achievement => {
+            entryHeight += getTextHeight('• ' + achievement, 10, maxWidth - 10);
+          });
+          entryHeight += subsectionSpacing;
+
+          checkPageBreak(entryHeight);
+
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(11);
+          doc.setTextColor(28, 27, 26);
+          doc.text(exp.title || '', margin, y);
+          y += lineHeight;
+
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(10);
+          doc.setTextColor(67, 133, 190);
+          const companyText = `${exp.company} | ${exp.location || ''}`;
+          doc.text(companyText, margin, y);
+          y += lineHeight;
+
+          doc.setTextColor(111, 110, 105);
+          doc.text(exp.period || '', margin, y);
+          y += lineHeight;
+
+          doc.setFontSize(10);
+          doc.setTextColor(28, 27, 26);
+          (exp.achievements || []).forEach(achievement => {
+            const achievementHeight = getTextHeight('• ' + achievement, 10, maxWidth - 10);
+            checkPageBreak(achievementHeight + lineHeight);
+            writeWrapped('• ' + achievement, margin + 10, 10, maxWidth - 10);
+            y += 4;
+          });
+
+          y += subsectionSpacing;
+        });
+      }
+
+      // Education Section
+      checkPageBreak(80);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.setTextColor(28, 27, 26);
+      doc.text('EDUCATION', margin, y);
+      y += subsectionSpacing;
+
+      if (profileData.education) {
+        const edu = profileData.education;
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.text(edu.degree || '', margin, y);
+        y += lineHeight;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setTextColor(139, 126, 200);
+        doc.text(edu.institution || '', margin, y);
+        y += lineHeight;
+
+        doc.setTextColor(111, 110, 105);
+        doc.text(`${edu.location || ''} | ${edu.period || ''}`, margin, y);
+        y += sectionSpacing;
+      }
+
+      // Skills Section
+      checkPageBreak(100);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.setTextColor(28, 27, 26);
+      doc.text('TECHNICAL SKILLS', margin, y);
+      y += subsectionSpacing;
+
+      if (profileData.skills && typeof profileData.skills === 'object') {
+        Object.entries(profileData.skills).forEach(([category, skills]) => {
+          const categoryText = category + ': ';
+          const skillsText = String(skills);
+          
+          // Get the width of category to calculate remaining space for skills
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(10);
+          const categoryWidth = doc.getTextWidth(categoryText);
+          
+          // Calculate how much space skills need
+          const remainingWidth = maxWidth - categoryWidth;
+          const skillLines = doc.splitTextToSize(skillsText, remainingWidth);
+          
+          // Calculate total height needed - be more generous
+          const totalHeight = (skillLines.length + 1) * lineHeight + 8;
+          checkPageBreak(totalHeight);
+          
+          // Write category in bold
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(10);
+          doc.setTextColor(28, 27, 26);
+          doc.text(categoryText, margin, y);
+          
+          // Write skills in normal weight - black color
+          doc.setFont('helvetica', 'normal');
+          doc.setTextColor(0, 0, 0);
+          
+          if (skillLines.length === 1) {
+            // Single line - continue on same line
+            doc.text(skillsText, margin + categoryWidth, y);
+            y += lineHeight + 8;
+          } else {
+            // Multiple lines - first line continues, rest wrap
+            // Write first skill line after category
+            doc.text(skillLines[0], margin + categoryWidth, y);
+            
+            // Write remaining skill lines from margin
+            for (let i = 1; i < skillLines.length; i++) {
+              y += lineHeight;
+              doc.text(skillLines[i], margin, y);
+            }
+            y += lineHeight + 8;
+          }
+        });
+        y += 4;
+      }
+
+      // Languages Section
+      checkPageBreak(50);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.text('LANGUAGES', margin, y);
+      y += subsectionSpacing;
+
+      if (profileData.languages && profileData.languages.length > 0) {
+        const languagesText = profileData.languages
+          .map(lang => `${lang.name}: ${lang.level}`)
+          .join(' | ');
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        writeWrapped(languagesText, margin, 10, maxWidth);
+      }
+
+      doc.save('Rizki_Perdana_CV.pdf');
+    }
+
+    loadData();
+  </script>
+</body>
+</html>

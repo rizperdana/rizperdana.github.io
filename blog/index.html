@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Rizki Perdana</title>
+  
+  <!-- Tailwind CSS + DaisyUI CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            flexoki: {
+              bg: '#1C1B1A',
+              'bg-2': '#282726',
+              'bg-3': '#403E3C',
+              'bg-4': '#575653',
+              text: '#CECDC3',
+              muted: '#B7B5AC',
+              subtle: '#6F6E69',
+              primary: '#4385BE',
+              'primary-dark': '#205EA6',
+              secondary: '#8B7EC8',
+              'secondary-dark': '#5E409D',
+              accent: '#D14D41',
+              'accent-dark': '#AF3029',
+              info: '#3AA99F',
+              'info-dark': '#24837B',
+              success: '#879A39',
+              'success-dark': '#66800B',
+              warning: '#D0A215',
+              'warning-dark': '#AD8301',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-flexoki-bg min-h-screen text-flexoki-text">
+  
+  <!-- Glass Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-flexoki-bg/85 border-b border-white/5">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <a href="../index.html" class="text-xl font-bold text-flexoki-text hover:text-flexoki-primary transition-colors">
+          Rizki Perdana
+        </a>
+        <div class="flex items-center gap-6">
+          <a href="../index.html" class="text-flexoki-text/70 font-medium hover:text-flexoki-primary transition-colors">Home</a>
+          <a href="../cv.html" class="text-flexoki-text/70 font-medium hover:text-flexoki-primary transition-colors">CV</a>
+          <a href="index.html" class="text-flexoki-primary font-medium">Blog</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 pt-28 pb-12 max-w-4xl">
+    
+    <!-- Decorative elements -->
+    <div class="fixed top-20 left-10 w-72 h-72 bg-flexoki-secondary/10 rounded-full blur-3xl -z-10"></div>
+    <div class="fixed top-40 right-10 w-96 h-96 bg-flexoki-primary/10 rounded-full blur-3xl -z-10"></div>
+    
+    <!-- Header -->
+    <header class="mb-12">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-flexoki-text mb-4">
+          <span class="gradient-text">Blog</span>
+        </h1>
+        <p class="text-lg text-flexoki-muted max-w-2xl mx-auto">
+          Thoughts on software engineering, AI/LLMs, and best practices
+        </p>
+      </div>
+    </header>
+
+    <!-- Blog Posts Grid -->
+    <section>
+      <div class="grid md:grid-cols-2 gap-6" id="posts-container">
+        <!-- Posts loaded dynamically -->
+        <div class="bg-flexoki-bg-2/50 rounded-2xl p-6 border border-white/5">
+          <div class="animate-pulse">
+            <div class="h-5 bg-flexoki-bg-3 rounded w-3/4 mb-4"></div>
+            <div class="h-4 bg-flexoki-bg-3 rounded w-full mb-2"></div>
+            <div class="h-4 bg-flexoki-bg-3 rounded w-2/3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="hidden text-center py-16">
+      <div class="bg-flexoki-bg-2/50 rounded-3xl p-12 inline-block border border-white/5">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-flexoki-subtle mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        </svg>
+        <p class="text-flexoki-muted text-lg">No blog posts yet.</p>
+        <p class="text-flexoki-subtle text-sm mt-2">Check back soon for new articles!</p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 py-8 mt-12">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-flexoki-subtle text-sm">
+        Built with 
+        <span class="text-flexoki-primary">DaisyUI</span> + 
+        <span class="text-flexoki-secondary">Tailwind</span>
+      </p>
+      <p class="text-flexoki-subtle text-xs mt-2">
+        © 2026 Rizki Perdana. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    let postsData = null;
+
+    async function loadPosts() {
+      try {
+        const res = await fetch('../posts.json');
+        postsData = await res.json();
+        renderPosts();
+      } catch (error) {
+        console.error('Error loading posts:', error);
+        document.getElementById('posts-container').innerHTML = `
+          <div class="col-span-2 text-center py-8">
+            <p class="text-flexoki-accent">Error loading blog posts. Please try again later.</p>
+          </div>
+        `;
+      }
+    }
+
+    function renderPosts() {
+      const container = document.getElementById('posts-container');
+      const emptyState = document.getElementById('empty-state');
+
+      if (!postsData || !postsData.posts || postsData.posts.length === 0) {
+        container.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        return;
+      }
+
+      container.innerHTML = postsData.posts.map((post, index) => `
+        <a href="post.html?slug=${post.slug}" 
+           class="block bg-gradient-to-br from-flexoki-bg-2/60 to-flexoki-bg/60 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:border-flexoki-secondary/30 hover:bg-flexoki-bg-2/80 transition-all duration-300 group">
+          
+          <!-- Date & Category -->
+          <div class="flex items-center gap-3 mb-4">
+            <span class="text-xs text-flexoki-subtle">${post.date || ''}</span>
+            ${post.category ? `<span class="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs">${post.category}</span>` : ''}
+          </div>
+          
+          <!-- Title -->
+          <h2 class="text-xl font-bold text-flexoki-text mb-3 group-hover:text-flexoki-primary transition-colors">
+            ${post.title || 'Untitled'}
+          </h2>
+          
+          <!-- Excerpt -->
+          <p class="text-flexoki-muted mb-6 line-clamp-3">
+            ${post.excerpt || ''}
+          </p>
+          
+          <!-- Tags -->
+          ${post.tags && post.tags.length > 0 ? `
+            <div class="flex flex-wrap gap-2 mb-4">
+              ${post.tags.slice(0, 3).map(tag => `
+                <span class="text-xs text-flexoki-secondary">#${tag}</span>
+              `).join('')}
+            </div>
+          ` : ''}
+          
+          <!-- Read More -->
+          <span class="inline-flex items-center gap-1 text-flexoki-primary text-sm group-hover:translate-x-1 transition-transform">
+            Read article 
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </a>
+      `).join('');
+    }
+
+    loadPosts();
+  </script>
+</body>
+</html>
