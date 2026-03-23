@@ -76,6 +76,7 @@
           <a href="index.html" class="text-flexoki-primary font-medium hover:text-flexoki-secondary transition-colors">Home</a>
           <a href="cv.html" class="text-flexoki-text/70 font-medium hover:text-flexoki-primary transition-colors">CV</a>
           <a href="blog/index.html" class="text-flexoki-text/70 font-medium hover:text-flexoki-primary transition-colors">Blog</a>
+          <a href="projects.html" class="text-flexoki-text/70 font-medium hover:text-flexoki-primary transition-colors">Projects</a>
         </div>
       </div>
     </div>
@@ -256,7 +257,7 @@
         return;
       }
 
-      const toShow = projectsData.projects.slice(0, 2);
+      const toShow = projectsData.projects.slice(0, 4);
 
       container.innerHTML = toShow.map(project => `
         <div class="bg-gradient-to-br from-flexoki-bg-2/60 to-flexoki-bg/60 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:border-flexoki-primary/30 hover:bg-flexoki-bg-2/80 transition-all duration-300 group">

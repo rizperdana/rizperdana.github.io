@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Rizki Perdana</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'flexoki-bg': '#0D1117',
+                        'flexoki-bg-2': '#161B22',
+                        'flexoki-text': '#E6EDF3',
+                        'flexoki-muted': '#8B949E',
+                        'flexoki-subtle': '#6E7681',
+                        'flexoki-primary': '#58A6FF',
+                        'flexoki-secondary': '#238636'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0D1117; }
+    </style>
+</head>
+<body class="bg-flexoki-bg text-flexoki-text min-h-screen">
+    <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-flexoki-bg/85 border-b border-white/5">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="text-xl font-bold text-flexoki-text hover:text-flexoki-primary transition-colors">
+                    Rizki Perdana
+                </a>
+                <div class="flex items-center gap-6">
+                    <a href="index.html" class="text-flexoki-text/70 font-medium hover:text-flexoki-primary transition-colors">Home</a>
+                    <a href="cv.html" class="text-flexoki-text/70 font-medium hover:text-flexoki-primary transition-colors">CV</a>
+                    <a href="blog/index.html" class="text-flexoki-text/70 font-medium hover:text-flexoki-primary transition-colors">Blog</a>
+                    <a href="projects.html" class="text-flexoki-primary font-medium hover:text-flexoki-secondary transition-colors">Projects</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 pt-28 pb-12 relative z-10">
+        <section class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-flexoki-text mb-4">Projects</h1>
+            <p class="text-flexoki-muted text-lg max-w-2xl">A collection of my open-source projects and applications.</p>
+        </section>
+
+        <div id="projects-container" class="grid md:grid-cols-2 gap-6">
+            <p class="text-flexoki-muted">Loading projects...</p>
+        </div>
+    </main>
+
+    <footer class="border-t border-white/5 py-8 mt-12">
+        <div class="container mx-auto px-4 text-center text-flexoki-muted">
+            <p>&copy; 2026 Rizki Perdana. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        let projectsData = null;
+
+        async function init() {
+            const projectsRes = await fetch('projects.json');
+            projectsData = await projectsRes.json();
+            loadProjects();
+        }
+
+        function loadProjects() {
+            const container = document.getElementById('projects-container');
+
+            if (!projectsData || !projectsData.projects || projectsData.projects.length === 0) {
+                container.innerHTML = '<p class="text-flexoki-muted">No projects available yet.</p>';
+                return;
+            }
+
+            container.innerHTML = projectsData.projects.map(project => `
+                <div class="bg-gradient-to-br from-flexoki-bg-2/60 to-flexoki-bg/60 backdrop-blur-sm rounded-2xl p-6 border border-white/5 hover:border-flexoki-primary/30 hover:bg-flexoki-bg-2/80 transition-all duration-300 group">
+                    <h3 class="text-xl font-bold text-flexoki-text mb-3 group-hover:text-flexoki-primary transition-colors">${project.title || 'Untitled'}</h3>
+                    <p class="text-flexoki-muted mb-4">${project.description || ''}</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        ${(project.technologies || []).map(tech => 
+                            `<span class="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-flexoki-secondary">${tech}</span>`
+                        ).join('')}
+                    </div>
+                    ${project.url ? `
+                        <a href="${project.url}" target="_blank" class="inline-flex items-center gap-1 text-flexoki-primary hover:text-flexoki-secondary transition-colors">
+                            View Project 
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                        </a>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        init();
+    </script>
+</body>
+</html>
