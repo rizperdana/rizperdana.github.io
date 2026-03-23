@@ -1,12 +1,29 @@
 {
   "posts": [
     {
+      "slug": "code-generation-llms-benchmark",
+      "title": "Code Generation LLMs: Benchmark Analysis",
+      "excerpt": "A comprehensive guide to Code Generation LLMs: Benchmark Analysis. Learn the fundamentals, best practices, and practical implementations for modern software development.",
+      "date": "2026-03-23",
+      "category": "AI & LLMs",
+      "tags": [
+        "code-generation-llms-benchmark",
+        "software-engineering",
+        "tutorial"
+      ]
+    },
+    {
       "slug": "good-programming-practices",
       "title": "Fundamentals of Good Programming Practices",
       "excerpt": "Explore the core principles that separate amateur code from professional-grade software. Learn about clean code, SOLID principles, and testing strategies that will elevate your development skills.",
       "date": "2026-03-01",
       "category": "Software Engineering",
-      "tags": ["clean-code", "best-practices", "solid", "testing"]
+      "tags": [
+        "clean-code",
+        "best-practices",
+        "solid",
+        "testing"
+      ]
     },
     {
       "slug": "local-llm-development",
@@ -14,7 +31,13 @@
       "excerpt": "Discover how to leverage powerful open-source LLMs like Llama, Mistral, and Qwen for local development. Learn about quantization, model selection, and building privacy-first AI applications.",
       "date": "2026-03-05",
       "category": "AI & LLMs",
-      "tags": ["llm", "ollama", "local-ai", "privacy", "development"]
+      "tags": [
+        "llm",
+        "ollama",
+        "local-ai",
+        "privacy",
+        "development"
+      ]
     },
     {
       "slug": "openrouter-chatbot",
@@ -22,7 +45,13 @@
       "excerpt": "A practical guide to creating a chatbot using OpenRouter's unified API. Learn how to integrate multiple LLM providers, handle conversations, and deploy your AI assistant.",
       "date": "2026-03-08",
       "category": "Tutorial",
-      "tags": ["openrouter", "chatbot", "api", "javascript", "ai"]
+      "tags": [
+        "openrouter",
+        "chatbot",
+        "api",
+        "javascript",
+        "ai"
+      ]
     }
   ]
 }

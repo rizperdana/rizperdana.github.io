@@ -1,33 +1,48 @@
 {
-    "projects": [
-        {
-            "title": "PindahKerja",
-            "description": "Job search and career transition platform helping professionals find their next opportunity",
-            "technologies": [
-                "Next.js",
-                "React",
-                "TypeScript",
-                "Vercel"
-            ],
-            "url": "https://pindahkerja.vercel.app/",
-            "status": "Active",
-            "featured": true
-        },
-        {
-            "title": "Wikwok",
-            "description": "A high-engagement, vertical-scroll discovery engine that transforms Wikipedia content into a localized, social-media-style learning experience.",
-            "technologies": [
-                "Next.js 15",
-                "React Compiler",
-                "TypeScript",
-                "Supabase",
-                "TanStack Query",
-                "Framer Motion",
-                "Vercel Edge"
-            ],
-            "url": "https://wik-wok.vercel.app/",
-            "status": "Active",
-            "featured": true
-        }
-    ]
+  "projects": [
+    {
+      "title": "semgrepll",
+      "description": "Local semantic code search - 100% offline AI-powered grep using embeddings. Supports llama.cpp, ONNX, and Ollama backends.",
+      "technologies": [
+        "Python",
+        "LanceDB",
+        "SQLite",
+        "Ollama",
+        "ONNX Runtime",
+        "llama.cpp"
+      ],
+      "url": "https://github.com/rizperdana/semgrepll",
+      "status": "Active",
+      "featured": true
+    },
+    {
+      "title": "PindahKerja",
+      "description": "Job search and career transition platform helping professionals find their next opportunity",
+      "technologies": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Vercel"
+      ],
+      "url": "https://pindahkerja.vercel.app/",
+      "status": "Active",
+      "featured": true
+    },
+    {
+      "title": "Wikwok",
+      "description": "A high-engagement, vertical-scroll discovery engine that transforms Wikipedia content into a localized, social-media-style learning experience.",
+      "technologies": [
+        "Next.js 15",
+        "React Compiler",
+        "TypeScript",
+        "Supabase",
+        "TanStack Query",
+        "Framer Motion",
+        "Vercel Edge"
+      ],
+      "url": "https://wik-wok.vercel.app/",
+      "status": "Active",
+      "featured": true
+    }
+  ]
 }
