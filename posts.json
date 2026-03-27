@@ -1,6 +1,21 @@
 {
   "posts": [
     {
+      "slug": "building-reliable-llm-pipelines-with-structured-output",
+      "title": "Building Reliable LLM Pipelines with Structured Output and Validation",
+      "excerpt": "A practical guide to extracting reliable, typed structured output from LLMs using constrained decoding, schema validation, and retry strategies \u2014 moving from fragile prompt hacks to production-grade pipelines.",
+      "date": "2026-03-28",
+      "category": "AI & LLMs",
+      "tags": [
+        "llm",
+        "python",
+        "software-engineering",
+        "ai",
+        "structured-output",
+        "pydantic"
+      ]
+    },
+    {
       "slug": "code-generation-llms-benchmark",
       "title": "Code Generation LLMs: Benchmark Analysis",
       "excerpt": "A comprehensive guide to Code Generation LLMs: Benchmark Analysis. Learn the fundamentals, best practices, and practical implementations for modern software development.",
@@ -13,16 +28,17 @@
       ]
     },
     {
-      "slug": "good-programming-practices",
-      "title": "Fundamentals of Good Programming Practices",
-      "excerpt": "Explore the core principles that separate amateur code from professional-grade software. Learn about clean code, SOLID principles, and testing strategies that will elevate your development skills.",
-      "date": "2026-03-01",
-      "category": "Software Engineering",
+      "slug": "openrouter-chatbot",
+      "title": "Building a Simple Chatbot with OpenRouter API",
+      "excerpt": "A practical guide to creating a chatbot using OpenRouter's unified API. Learn how to integrate multiple LLM providers, handle conversations, and deploy your AI assistant.",
+      "date": "2026-03-08",
+      "category": "Tutorial",
       "tags": [
-        "clean-code",
-        "best-practices",
-        "solid",
-        "testing"
+        "openrouter",
+        "chatbot",
+        "api",
+        "javascript",
+        "ai"
       ]
     },
     {
@@ -40,17 +56,16 @@
       ]
     },
     {
-      "slug": "openrouter-chatbot",
-      "title": "Building a Simple Chatbot with OpenRouter API",
-      "excerpt": "A practical guide to creating a chatbot using OpenRouter's unified API. Learn how to integrate multiple LLM providers, handle conversations, and deploy your AI assistant.",
-      "date": "2026-03-08",
-      "category": "Tutorial",
+      "slug": "good-programming-practices",
+      "title": "Fundamentals of Good Programming Practices",
+      "excerpt": "Explore the core principles that separate amateur code from professional-grade software. Learn about clean code, SOLID principles, and testing strategies that will elevate your development skills.",
+      "date": "2026-03-01",
+      "category": "Software Engineering",
       "tags": [
-        "openrouter",
-        "chatbot",
-        "api",
-        "javascript",
-        "ai"
+        "clean-code",
+        "best-practices",
+        "solid",
+        "testing"
       ]
     }
   ]
