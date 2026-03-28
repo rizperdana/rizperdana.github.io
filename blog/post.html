@@ -188,7 +188,7 @@
 
       try {
         // Load posts index
-        const res = await fetch('../posts.json');
+        const res = await fetch('../posts.json?v=1774663150');
         postsData = await res.json();
 
         if (!postsData || !postsData.posts) {

@@ -129,7 +129,7 @@
 
     async function loadPosts() {
       try {
-        const res = await fetch('../posts.json');
+        const res = await fetch('../posts.json?v=1774663150');
         postsData = await res.json();
         renderPosts();
       } catch (error) {
