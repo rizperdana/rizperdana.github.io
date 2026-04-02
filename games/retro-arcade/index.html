@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retro Arcade - Vintage Game Collection</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="scanlines"></div>
+
+  <!-- Main Menu -->
+  <div id="menu" class="screen active">
+    <div class="cabinet">
+      <h1 class="title">
+        <span class="blink">INSERT COIN</span>
+        <br>RETRO ARCADE
+      </h1>
+      <div class="game-list">
+        <button class="game-btn" data-game="snake" onclick="launchGame('snake')">
+          <span class="icon">&#x1F40D;</span>
+          <span class="name">SNAKE</span>
+          <span class="year">1976</span>
+        </button>
+        <button class="game-btn" data-game="pong" onclick="launchGame('pong')">
+          <span class="icon">&#x1F3D3;</span>
+          <span class="name">PONG</span>
+          <span class="year">1972</span>
+        </button>
+        <button class="game-btn" data-game="tetris" onclick="launchGame('tetris')">
+          <span class="icon">&#x1F9E9;</span>
+          <span class="name">TETRIS</span>
+          <span class="year">1984</span>
+        </button>
+        <button class="game-btn" data-game="breakout" onclick="launchGame('breakout')">
+          <span class="icon">&#x1F3AE;</span>
+          <span class="name">BREAKOUT</span>
+          <span class="year">1976</span>
+        </button>
+      </div>
+      <p class="footer">USE KEYBOARD ARROWS / WASD TO PLAY</p>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="game-screen" class="screen">
+    <div class="game-hud">
+      <div class="hud-left">
+        <button class="back-btn" onclick="backToMenu()">&#x25C0; MENU</button>
+        <span id="game-title" class="hud-title"></span>
+      </div>
+      <div class="hud-right">
+        <span>SCORE: <strong id="score">0</strong></span>
+        <span>HIGH: <strong id="high-score">0</strong></span>
+      </div>
+    </div>
+    <canvas id="game-canvas"></canvas>
+    <div id="game-overlay" class="overlay" onclick="startGame()">
+      <div class="overlay-text">
+        <p>PRESS SPACE OR CLICK TO START</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="games/snake.js"></script>
+  <script src="games/pong.js"></script>
+  <script src="games/tetris.js"></script>
+  <script src="games/breakout.js"></script>
+  <script>
+    const GAMES = { snake: SnakeGame, pong: PongGame, tetris: TetrisGame, breakout: BreakoutGame };
+    let currentGame = null;
+
+    function launchGame(name) {
+      document.getElementById('menu').classList.remove('active');
+      document.getElementById('game-screen').classList.add('active');
+      document.getElementById('game-title').textContent = name.toUpperCase();
+      document.getElementById('score').textContent = '0';
+      document.getElementById('high-score').textContent = localStorage.getItem(`retro_${name}_high`) || '0';
+      document.getElementById('game-overlay').style.display = 'flex';
+
+      const canvas = document.getElementById('game-canvas');
+      currentGame = new GAMES[name](canvas, updateHUD);
+    }
+
+    function startGame() {
+      document.getElementById('game-overlay').style.display = 'none';
+      if (currentGame) currentGame.start();
+    }
+
+    function backToMenu() {
+      if (currentGame) { currentGame.stop(); currentGame = null; }
+      document.getElementById('game-screen').classList.remove('active');
+      document.getElementById('menu').classList.add('active');
+    }
+
+    function updateHUD(score) {
+      document.getElementById('score').textContent = score;
+      const key = currentGame?.name || '';
+      const high = parseInt(localStorage.getItem(`retro_${key}_high`) || '0');
+      if (score > high) {
+        localStorage.setItem(`retro_${key}_high`, score);
+        document.getElementById('high-score').textContent = score;
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' && document.getElementById('game-overlay').style.display !== 'none') {
+        startGame();
+      }
+      if (e.code === 'Escape') backToMenu();
+    });
+  </script>
+</body>
+</html>

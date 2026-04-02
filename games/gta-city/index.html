@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏙️ GTA City - Top Down Crime</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:'Courier New',monospace;overflow:hidden;color:#fff}
+#gameCanvas{border:2px solid #333;border-radius:4px;image-rendering:pixelated}
+#hud{position:absolute;top:10px;left:10px;font-size:14px;text-shadow:1px 1px 2px #000;z-index:10}
+#hud div{margin:2px 0}
+#minimap{position:absolute;top:10px;right:10px;border:1px solid #555;z-index:10}
+#startScreen{position:absolute;inset:0;background:rgba(0,0,0,0.9);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100}
+#startScreen h1{font-size:48px;color:#ff4444;text-shadow:0 0 20px #ff0000;margin-bottom:10px}
+#startScreen h2{font-size:18px;color:#888;margin-bottom:30px}
+#startScreen .controls{font-size:13px;color:#aaa;text-align:left;line-height:2}
+#startScreen .controls span{color:#ffcc00}
+#startBtn{margin-top:20px;padding:12px 40px;font-size:20px;background:#ff4444;color:#fff;border:none;cursor:pointer;font-family:inherit;border-radius:4px}
+#startBtn:hover{background:#ff6666}
+#wasted{position:absolute;inset:0;background:rgba(180,0,0,0.7);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:90}
+#wasted h1{font-size:72px;color:#fff;text-shadow:0 0 30px #ff0000;font-style:italic}
+#wasted p{font-size:18px;margin-top:10px;color:#ddd}
+#wasted button{margin-top:20px;padding:10px 30px;font-size:16px;background:#fff;color:#000;border:none;cursor:pointer;font-family:inherit}
+#wanted{color:#ff4444;font-size:20px;letter-spacing:2px}
+</style>
+</head>
+<body>
+<div id="hud">
+  <div>💰 $<span id="money">0</span></div>
+  <div>❤️ <span id="health">100</span></div>
+  <div id="wanted"></div>
+  <div>🚗 <span id="speed">0</span> km/h</div>
+  <div>⏱️ <span id="time">00:00</span></div>
+</div>
+<canvas id="minimap" width="150" height="150"></canvas>
+<canvas id="gameCanvas"></canvas>
+
+<div id="startScreen">
+  <h1>GTA CITY</h1>
+  <h2>Top Down Crime</h2>
+  <div class="controls">
+    <span>WASD</span> — Move / Drive<br>
+    <span>SPACE</span> — Enter / Exit Vehicle<br>
+    <span>E</span> — Attack (on foot)<br>
+    <span>Q</span> — Steal Car (near vehicle)<br>
+    <span>SHIFT</span> — Sprint (on foot)<br>
+    <span>ESC</span> — Pause
+  </div>
+  <button id="startBtn" onclick="startGame()">▶ START GAME</button>
+</div>
+
+<div id="wasted">
+  <h1>WASTED</h1>
+  <p>Survived: <span id="surviveTime">00:00</span></p>
+  <button onclick="restartGame()">TRY AGAIN</button>
+</div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────────────────
+const MAP_W = 3000, MAP_H = 3000;
+const TILE = 40;
+const COLS = MAP_W / TILE, ROWS = MAP_H / TILE;
+const ROAD_COLOR = '#2a2a2a';
+const BUILDING_COLORS = ['#3a3a4a','#4a3a3a','#3a4a3a','#4a4a3a','#3a3a5a','#5a3a4a'];
+const CAR_COLORS = ['#e74c3c','#3498db','#2ecc71','#f39c12','#9b59b6','#1abc9c','#e67e22','#ecf0f1','#34495e'];
+const NPC_COLORS = ['#e8d5b7','#c68642','#8d5524','#f1c27d','#ffdbac'];
+
+// ─── STATE ────────────────────────────────────────────────────────────
+let canvas, ctx, miniCtx;
+let gameRunning = false, paused = false;
+let player, camera, buildings, roads, cars, npcs, pickups;
+let keys = {};
+let money = 0, health = 100, wanted = 0;
+let startTime, frameCount = 0;
+let particles = [];
+
+// ─── MAP GENERATION ───────────────────────────────────────────────────
+function generateMap() {
+  buildings = [];
+  roads = [];
+  // Grid of roads
+  for (let x = 0; x < COLS; x++) {
+    for (let y = 0; y < ROWS; y++) {
+      let wx = x * TILE, wy = y * TILE;
+      // Roads every 5 tiles
+      if (x % 5 === 0 || y % 5 === 0) {
+        roads.push({x: wx, y: wy, w: TILE, h: TILE});
+      } else {
+        // Building
+        let bw = TILE * (1 + Math.floor(Math.random() * 2));
+        let bh = TILE * (1 + Math.floor(Math.random() * 2));
+        bw = Math.min(bw, TILE * 3);
+        bh = Math.min(bh, TILE * 3);
+        let color = BUILDING_COLORS[Math.floor(Math.random() * BUILDING_COLORS.length)];
+        buildings.push({x: wx + 2, y: wy + 2, w: bw - 4, h: bh - 4, color});
+      }
+    }
+  }
+}
+
+function isRoad(x, y) {
+  let gx = Math.floor(x / TILE), gy = Math.floor(y / TILE);
+  return gx % 5 === 0 || gy % 5 === 0;
+}
+
+function isBlocked(x, y, r = 12) {
+  for (let b of buildings) {
+    if (x + r > b.x && x - r < b.x + b.w && y + r > b.y && y - r < b.y + b.h) return true;
+  }
+  return false;
+}
+
+// ─── ENTITIES ─────────────────────────────────────────────────────────
+function spawnCars(n) {
+  cars = [];
+  for (let i = 0; i < n; i++) {
+    let x, y;
+    do {
+      x = Math.random() * MAP_W;
+      y = Math.random() * MAP_H;
+    } while (!isRoad(x, y));
+    cars.push({
+      x, y,
+      angle: Math.random() * Math.PI * 2,
+      speed: 0,
+      maxSpeed: 2 + Math.random() * 2,
+      color: CAR_COLORS[Math.floor(Math.random() * CAR_COLORS.length)],
+      w: 24, h: 14,
+      driver: null,
+      parked: Math.random() > 0.5
+    });
+  }
+}
+
+function spawnNPCs(n) {
+  npcs = [];
+  for (let i = 0; i < n; i++) {
+    let x, y;
+    do {
+      x = Math.random() * MAP_W;
+      y = Math.random() * MAP_H;
+    } while (isBlocked(x, y));
+    npcs.push({
+      x, y,
+      angle: Math.random() * Math.PI * 2,
+      speed: 0.3 + Math.random() * 0.5,
+      color: NPC_COLORS[Math.floor(Math.random() * NPC_COLORS.length)],
+      hp: 30,
+      fleeing: false,
+      changeTimer: Math.random() * 200
+    });
+  }
+}
+
+function spawnPickups(n) {
+  pickups = [];
+  for (let i = 0; i < n; i++) {
+    let x, y;
+    do {
+      x = Math.random() * MAP_W;
+      y = Math.random() * MAP_H;
+    } while (isBlocked(x, y));
+    pickups.push({
+      x, y,
+      type: Math.random() > 0.5 ? 'money' : 'health',
+      value: Math.random() > 0.5 ? 50 : 25,
+      bobPhase: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+// ─── PLAYER ───────────────────────────────────────────────────────────
+function initPlayer() {
+  player = {
+    x: MAP_W / 2, y: MAP_H / 2,
+    angle: 0, speed: 0,
+    inCar: false, car: null,
+    attackCooldown: 0,
+    sprint: false
+  };
+  camera = {x: 0, y: 0};
+  money = 0; health = 100; wanted = 0;
+  particles = [];
+}
+
+// ─── UPDATE ───────────────────────────────────────────────────────────
+function update() {
+  if (!gameRunning || paused) return;
+  frameCount++;
+
+  // Player movement
+  if (player.inCar && player.car) {
+    let car = player.car;
+    if (keys['w'] || keys['arrowup']) car.speed = Math.min(car.speed + 0.08, car.maxSpeed);
+    else if (keys['s'] || keys['arrowdown']) car.speed = Math.max(car.speed - 0.12, -car.maxSpeed * 0.4);
+    else car.speed *= 0.97;
+    if (keys['a'] || keys['arrowleft']) car.angle -= 0.04 * (Math.abs(car.speed) / car.maxSpeed);
+    if (keys['d'] || keys['arrowright']) car.angle += 0.04 * (Math.abs(car.speed) / car.maxSpeed);
+    let nx = car.x + Math.cos(car.angle) * car.speed;
+    let ny = car.y + Math.sin(car.angle) * car.speed;
+    if (!isBlocked(nx, ny, 16)) { car.x = nx; car.y = ny; }
+    else { car.speed *= -0.3; addParticles(nx, ny, '#ff8800', 5); }
+    car.x = Math.max(20, Math.min(MAP_W - 20, car.x));
+    car.y = Math.max(20, Math.min(MAP_H - 20, car.y));
+    player.x = car.x; player.y = car.y;
+    // Hit NPCs
+    for (let npc of npcs) {
+      let dx = npc.x - car.x, dy = npc.y - car.y;
+      if (dx * dx + dy * dy < 400 && Math.abs(car.speed) > 1) {
+        npc.hp -= 20;
+        addParticles(npc.x, npc.y, '#ff0000', 8);
+        if (npc.hp <= 0) {
+          money += 10;
+          wanted = Math.min(5, wanted + 1);
+          npc.x = -9999;
+        }
+      }
+    }
+    // Exit car
+    if (keys[' ']) {
+      player.inCar = false;
+      player.car.driver = null;
+      player.car = null;
+      keys[' '] = false;
+    }
+  } else {
+    let spd = keys['shift'] ? 3.5 : 2;
+    let dx = 0, dy = 0;
+    if (keys['w'] || keys['arrowup']) dy = -1;
+    if (keys['s'] || keys['arrowdown']) dy = 1;
+    if (keys['a'] || keys['arrowleft']) dx = -1;
+    if (keys['d'] || keys['arrowright']) dx = 1;
+    if (dx || dy) {
+      let len = Math.sqrt(dx * dx + dy * dy);
+      dx /= len; dy /= len;
+      let nx = player.x + dx * spd;
+      let ny = player.y + dy * spd;
+      if (!isBlocked(nx, ny, 8)) { player.x = nx; player.y = ny; }
+      player.angle = Math.atan2(dy, dx);
+    }
+    player.x = Math.max(10, Math.min(MAP_W - 10, player.x));
+    player.y = Math.max(10, Math.min(MAP_H - 10, player.y));
+    // Enter car
+    if (keys[' ']) {
+      for (let car of cars) {
+        let d = Math.hypot(car.x - player.x, car.y - player.y);
+        if (d < 30 && !car.driver) {
+          player.inCar = true;
+          player.car = car;
+          car.driver = player;
+          keys[' '] = false;
+          break;
+        }
+      }
+      keys[' '] = false;
+    }
+    // Steal car
+    if (keys['q']) {
+      for (let car of cars) {
+        let d = Math.hypot(car.x - player.x, car.y - player.y);
+        if (d < 40 && car.driver && car.driver !== player) {
+          car.driver = null;
+          player.inCar = true;
+          player.car = car;
+          car.driver = player;
+          wanted = Math.min(5, wanted + 2);
+          money += 20;
+          keys['q'] = false;
+          break;
+        }
+      }
+      keys['q'] = false;
+    }
+    // Attack
+    if (keys['e'] && player.attackCooldown <= 0) {
+      player.attackCooldown = 20;
+      for (let npc of npcs) {
+        let d = Math.hypot(npc.x - player.x, npc.y - player.y);
+        if (d < 40) {
+          npc.hp -= 15;
+          npc.fleeing = true;
+          addParticles(npc.x, npc.y, '#ff4444', 6);
+          if (npc.hp <= 0) {
+            money += 15;
+            wanted = Math.min(5, wanted + 1);
+            npc.x = -9999;
+          }
+        }
+      }
+    }
+    if (player.attackCooldown > 0) player.attackCooldown--;
+  }
+
+  // NPC AI
+  for (let npc of npcs) {
+    if (npc.x < -9000) continue;
+    npc.changeTimer--;
+    if (npc.changeTimer <= 0) {
+      npc.angle = Math.random() * Math.PI * 2;
+      npc.changeTimer = 100 + Math.random() * 200;
+      npc.fleeing = false;
+    }
+    if (npc.fleeing) {
+      let away = Math.atan2(npc.y - player.y, npc.x - player.x);
+      npc.angle = away;
+      npc.speed = 2;
+    } else {
+      npc.speed = 0.3 + Math.random() * 0.3;
+    }
+    let nx = npc.x + Math.cos(npc.angle) * npc.speed;
+    let ny = npc.y + Math.sin(npc.angle) * npc.speed;
+    if (!isBlocked(nx, ny, 6)) { npc.x = nx; npc.y = ny; }
+    else npc.angle += Math.PI / 2;
+    npc.x = Math.max(10, Math.min(MAP_W - 10, npc.x));
+    npc.y = Math.max(10, Math.min(MAP_H - 10, npc.y));
+  }
+
+  // Parked NPC cars move
+  for (let car of cars) {
+    if (car.driver || car === player.car) continue;
+    if (car.parked && Math.random() > 0.998) car.parked = false;
+    if (!car.parked) {
+      car.speed = Math.min(car.speed + 0.02, car.maxSpeed * 0.6);
+      let nx = car.x + Math.cos(car.angle) * car.speed;
+      let ny = car.y + Math.sin(car.angle) * car.speed;
+      if (!isBlocked(nx, ny, 14)) { car.x = nx; car.y = ny; }
+      else { car.angle += (Math.random() - 0.5) * 2; car.speed *= 0.5; }
+      if (Math.random() > 0.995) car.angle += (Math.random() - 0.5) * 1.5;
+    } else {
+      car.speed *= 0.9;
+    }
+  }
+
+  // Pickups
+  for (let p of pickups) {
+    p.bobPhase += 0.05;
+    let d = Math.hypot(p.x - player.x, p.y - player.y);
+    if (d < 25) {
+      if (p.type === 'money') money += p.value;
+      else health = Math.min(100, health + p.value);
+      p.x = -9999;
+      addParticles(p.x, p.y, p.type === 'money' ? '#ffcc00' : '#00ff88', 10);
+    }
+  }
+
+  // Wanted decay
+  if (frameCount % 300 === 0 && wanted > 0) wanted--;
+
+  // Particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    let p = particles[i];
+    p.x += p.vx; p.y += p.vy;
+    p.life--;
+    if (p.life <= 0) particles.splice(i, 1);
+  }
+
+  // Camera
+  camera.x = player.x - canvas.width / 2;
+  camera.y = player.y - canvas.height / 2;
+
+  // HUD
+  document.getElementById('money').textContent = money;
+  document.getElementById('health').textContent = Math.max(0, health);
+  document.getElementById('speed').textContent = player.inCar ? Math.abs(Math.round(player.car.speed * 30)) : 0;
+  let stars = '';
+  for (let i = 0; i < wanted; i++) stars += '⭐';
+  document.getElementById('wanted').textContent = stars;
+  let elapsed = Math.floor((Date.now() - startTime) / 1000);
+  let mm = String(Math.floor(elapsed / 60)).padStart(2, '0');
+  let ss = String(elapsed % 60).padStart(2, '0');
+  document.getElementById('time').textContent = mm + ':' + ss;
+
+  // Death
+  if (health <= 0) {
+    document.getElementById('surviveTime').textContent = mm + ':' + ss;
+    document.getElementById('wasted').style.display = 'flex';
+    gameRunning = false;
+  }
+}
+
+function addParticles(x, y, color, n) {
+  for (let i = 0; i < n; i++) {
+    particles.push({
+      x, y,
+      vx: (Math.random() - 0.5) * 4,
+      vy: (Math.random() - 0.5) * 4,
+      color,
+      life: 20 + Math.random() * 20
+    });
+  }
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────
+function render() {
+  ctx.fillStyle = '#1a1a2e';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.save();
+  ctx.translate(-camera.x, -camera.y);
+
+  // Roads
+  ctx.fillStyle = ROAD_COLOR;
+  for (let r of roads) {
+    if (r.x + r.w < camera.x || r.x > camera.x + canvas.width ||
+        r.y + r.h < camera.y || r.y > camera.y + canvas.height) continue;
+    ctx.fillRect(r.x, r.y, r.w, r.h);
+  }
+
+  // Road markings
+  ctx.strokeStyle = '#444';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([8, 8]);
+  for (let i = 0; i < COLS; i++) {
+    if (i % 5 === 0) {
+      let rx = i * TILE;
+      if (rx > camera.x - 10 && rx < camera.x + canvas.width + 10) {
+        ctx.beginPath();
+        ctx.moveTo(rx + TILE / 2, camera.y);
+        ctx.lineTo(rx + TILE / 2, camera.y + canvas.height);
+        ctx.stroke();
+      }
+    }
+  }
+  ctx.setLineDash([]);
+
+  // Buildings
+  for (let b of buildings) {
+    if (b.x + b.w < camera.x || b.x > camera.x + canvas.width ||
+        b.y + b.h < camera.y || b.y > camera.y + canvas.height) continue;
+    ctx.fillStyle = b.color;
+    ctx.fillRect(b.x, b.y, b.w, b.h);
+    // Windows
+    ctx.fillStyle = 'rgba(255,255,150,0.3)';
+    for (let wx = b.x + 4; wx < b.x + b.w - 4; wx += 8) {
+      for (let wy = b.y + 4; wy < b.y + b.h - 4; wy += 8) {
+        if (Math.random() > 0.3) ctx.fillRect(wx, wy, 4, 4);
+      }
+    }
+  }
+
+  // Pickups
+  for (let p of pickups) {
+    if (p.x < -9000) continue;
+    let bob = Math.sin(p.bobPhase) * 3;
+    ctx.fillStyle = p.type === 'money' ? '#ffcc00' : '#00ff88';
+    ctx.beginPath();
+    ctx.arc(p.x, p.y + bob, 6, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#000';
+    ctx.font = '8px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(p.type === 'money' ? '$' : '+', p.x, p.y + bob + 3);
+  }
+
+  // Cars
+  for (let car of cars) {
+    if (car.x < camera.x - 30 || car.x > camera.x + canvas.width + 30 ||
+        car.y < camera.y - 30 || car.y > camera.y + canvas.height + 30) continue;
+    ctx.save();
+    ctx.translate(car.x, car.y);
+    ctx.rotate(car.angle);
+    // Shadow
+    ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    ctx.fillRect(-car.w / 2 + 2, -car.h / 2 + 2, car.w, car.h);
+    // Body
+    ctx.fillStyle = car.color;
+    ctx.fillRect(-car.w / 2, -car.h / 2, car.w, car.h);
+    // Windshield
+    ctx.fillStyle = 'rgba(100,150,255,0.5)';
+    ctx.fillRect(car.w / 4, -car.h / 2 + 2, car.w / 4, car.h - 4);
+    // Headlights
+    ctx.fillStyle = '#ffff88';
+    ctx.fillRect(car.w / 2 - 2, -car.h / 2 + 1, 2, 3);
+    ctx.fillRect(car.w / 2 - 2, car.h / 2 - 4, 2, 3);
+    ctx.restore();
+  }
+
+  // NPCs
+  for (let npc of npcs) {
+    if (npc.x < -9000) continue;
+    if (npc.x < camera.x - 20 || npc.x > camera.x + canvas.width + 20 ||
+        npc.y < camera.y - 20 || npc.y > camera.y + canvas.height + 20) continue;
+    // Body
+    ctx.fillStyle = npc.color;
+    ctx.beginPath();
+    ctx.arc(npc.x, npc.y, 5, 0, Math.PI * 2);
+    ctx.fill();
+    // Direction indicator
+    ctx.fillStyle = '#333';
+    ctx.beginPath();
+    ctx.arc(npc.x + Math.cos(npc.angle) * 3, npc.y + Math.sin(npc.angle) * 3, 2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Player
+  if (player.inCar) {
+    // Already drawn as car
+  } else {
+    ctx.fillStyle = '#ff4444';
+    ctx.beginPath();
+    ctx.arc(player.x, player.y, 7, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(player.x + Math.cos(player.angle) * 4, player.y + Math.sin(player.angle) * 4, 2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Particles
+  for (let p of particles) {
+    ctx.globalAlpha = p.life / 40;
+    ctx.fillStyle = p.color;
+    ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
+  }
+  ctx.globalAlpha = 1;
+
+  ctx.restore();
+
+  // Minimap
+  renderMinimap();
+}
+
+function renderMinimap() {
+  let mc = document.getElementById('minimap');
+  let mctx = mc.getContext('2d');
+  let scale = mc.width / MAP_W;
+  mctx.fillStyle = '#111';
+  mctx.fillRect(0, 0, mc.width, mc.height);
+  // Roads
+  mctx.fillStyle = '#333';
+  for (let r of roads) {
+    mctx.fillRect(r.x * scale, r.y * scale, Math.max(1, r.w * scale), Math.max(1, r.h * scale));
+  }
+  // Player
+  mctx.fillStyle = '#ff4444';
+  mctx.beginPath();
+  mctx.arc(player.x * scale, player.y * scale, 3, 0, Math.PI * 2);
+  mctx.fill();
+  // Camera view
+  mctx.strokeStyle = '#fff';
+  mctx.lineWidth = 1;
+  mctx.strokeRect(camera.x * scale, camera.y * scale, canvas.width * scale, canvas.height * scale);
+}
+
+// ─── GAME LOOP ────────────────────────────────────────────────────────
+function gameLoop() {
+  update();
+  render();
+  requestAnimationFrame(gameLoop);
+}
+
+// ─── INPUT ────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  keys[e.key.toLowerCase()] = true;
+  if (e.key === 'Escape') paused = !paused;
+});
+document.addEventListener('keyup', e => {
+  keys[e.key.toLowerCase()] = false;
+});
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+function init() {
+  canvas = document.getElementById('gameCanvas');
+  ctx = canvas.getContext('2d');
+  canvas.width = Math.min(900, window.innerWidth - 20);
+  canvas.height = Math.min(600, window.innerHeight - 20);
+  generateMap();
+  spawnCars(40);
+  spawnNPCs(60);
+  spawnPickups(30);
+  initPlayer();
+  gameLoop();
+}
+
+function startGame() {
+  document.getElementById('startScreen').style.display = 'none';
+  startTime = Date.now();
+  gameRunning = true;
+}
+
+function restartGame() {
+  document.getElementById('wasted').style.display = 'none';
+  generateMap();
+  spawnCars(40);
+  spawnNPCs(60);
+  spawnPickups(30);
+  initPlayer();
+  startTime = Date.now();
+  gameRunning = true;
+}
+
+window.onload = init;
+</script>
+</body>
+</html>
