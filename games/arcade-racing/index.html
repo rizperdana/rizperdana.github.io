@@ -92,6 +92,35 @@
   @media (pointer: coarse) {
     #mobileControls { display: flex; }
   }
+  #touchZones {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 15;
+    pointer-events: none;
+  }
+  .touch-zone {
+    position: absolute;
+    pointer-events: auto;
+    touch-action: none;
+  }
+  .touch-zone.active { background: rgba(255,255,255,0.08); }
+  #zoneTop { top:0;left:0;right:0;height:50%; }
+  #zoneLeft { bottom:0;left:0;width:50%;height:50%;border-right:1px solid rgba(255,255,255,0.05); }
+  #zoneRight { bottom:0;right:0;width:50%;height:50%;border-left:1px solid rgba(255,255,255,0.05); }
+  .touch-indicator {
+    position: absolute;
+    color: rgba(255,255,255,0.2);
+    font-size: 28px;
+    pointer-events: none;
+    user-select: none;
+  }
+  #zoneTop .touch-indicator { top:10px;left:50%;transform:translateX(-50%); }
+  #zoneLeft .touch-indicator { bottom:10px;left:50%;transform:translateX(-50%); }
+  #zoneRight .touch-indicator { bottom:10px;right:50%;transform:translateX(50%); }
+  @media (pointer: coarse) {
+    #touchZones { display: block; }
+  }
 </style>
 </head>
 <body>
@@ -109,6 +138,12 @@
     <p class="big">Press Start to race</p>
     <button id="startBtn">Start Race</button>
   </div>
+</div>
+
+<div id="touchZones">
+  <div class="touch-zone" id="zoneTop"><span class="touch-indicator">▲ ACCEL</span></div>
+  <div class="touch-zone" id="zoneLeft"><span class="touch-indicator">◀ LEFT</span></div>
+  <div class="touch-zone" id="zoneRight"><span class="touch-indicator">RIGHT ▶</span></div>
 </div>
 
 <div id="mobileControls">
@@ -171,6 +206,23 @@
     btn.addEventListener('touchstart', (e) => { e.preventDefault(); keys[key] = true; });
     btn.addEventListener('touchend', (e) => { e.preventDefault(); keys[key] = false; });
   }
+
+  // Touch zones
+  const zoneTop = document.getElementById('zoneTop');
+  const zoneLeft = document.getElementById('zoneLeft');
+  const zoneRight = document.getElementById('zoneRight');
+
+  zoneTop.addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowUp'] = true; zoneTop.classList.add('active'); }, {passive:false});
+  zoneTop.addEventListener('touchend', (e) => { keys['ArrowUp'] = false; zoneTop.classList.remove('active'); });
+  zoneTop.addEventListener('touchcancel', () => { keys['ArrowUp'] = false; zoneTop.classList.remove('active'); });
+
+  zoneLeft.addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowLeft'] = true; zoneLeft.classList.add('active'); }, {passive:false});
+  zoneLeft.addEventListener('touchend', (e) => { keys['ArrowLeft'] = false; zoneLeft.classList.remove('active'); });
+  zoneLeft.addEventListener('touchcancel', () => { keys['ArrowLeft'] = false; zoneLeft.classList.remove('active'); });
+
+  zoneRight.addEventListener('touchstart', (e) => { e.preventDefault(); keys['ArrowRight'] = true; zoneRight.classList.add('active'); }, {passive:false});
+  zoneRight.addEventListener('touchend', (e) => { keys['ArrowRight'] = false; zoneRight.classList.remove('active'); });
+  zoneRight.addEventListener('touchcancel', () => { keys['ArrowRight'] = false; zoneRight.classList.remove('active'); });
 
   startBtn.addEventListener('click', startGame);
 

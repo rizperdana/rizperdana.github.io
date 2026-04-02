@@ -5,6 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Retro Arcade - Vintage Game Collection</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+  #touchOverlay {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    padding: 10px;
+    pointer-events: none;
+  }
+  .touch-row {
+    display: flex;
+    justify-content: space-between;
+    pointer-events: auto;
+  }
+  .touch-zone {
+    flex: 1;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.25);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .touch-zone:active { background: rgba(255,255,255,0.08); }
+  .touch-zone-left { border-right: 1px solid rgba(255,255,255,0.05); }
+  .touch-hint {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: rgba(255,255,255,0.3);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    text-align: center;
+    pointer-events: none;
+    z-index: 55;
+    line-height: 2;
+  }
+  @media (pointer: coarse) {
+    #touchOverlay { display: block; }
+    .touch-hint { display: block; }
+  }
+  </style>
 </head>
 <body>
   <div class="scanlines"></div>
@@ -62,10 +112,10 @@
     </div>
   </div>
 
-  <script src="games/snake.js"></script>
-  <script src="games/pong.js"></script>
-  <script src="games/tetris.js"></script>
-  <script src="games/breakout.js"></script>
+  <script src="snake.js"></script>
+  <script src="pong.js"></script>
+  <script src="tetris.js"></script>
+  <script src="breakout.js"></script>
   <script>
     const GAMES = { snake: SnakeGame, pong: PongGame, tetris: TetrisGame, breakout: BreakoutGame };
     let currentGame = null;
@@ -109,6 +159,82 @@
       }
       if (e.code === 'Escape') backToMenu();
     });
+
+    // Touch controls
+    const touchLeft = document.getElementById('touchLeft');
+    const touchRight = document.getElementById('touchRight');
+    const gameCanvas = document.getElementById('game-canvas');
+    let touchStartX = 0, touchStartY = 0, touchStartTime = 0;
+
+    function dispatchKey(key, type) {
+      document.dispatchEvent(new KeyboardEvent(type, { key, code: key === ' ' ? 'Space' : key }));
+    }
+
+    // Swipe detection for Snake and Tetris
+    gameCanvas.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
+    }, { passive: true });
+
+    gameCanvas.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      const dt = Date.now() - touchStartTime;
+      const absDx = Math.abs(dx), absDy = Math.abs(dy);
+
+      if (dt < 300 && (absDx > 30 || absDy > 30)) {
+        if (absDx > absDy) {
+          dispatchKey(dx > 0 ? 'ArrowRight' : 'ArrowLeft', 'keydown');
+        } else {
+          dispatchKey(dy > 0 ? 'ArrowDown' : 'ArrowUp', 'keydown');
+        }
+      } else if (dt < 300 && absDx < 20 && absDy < 20) {
+        if (document.getElementById('game-overlay').style.display !== 'none') {
+          startGame();
+        } else {
+          dispatchKey(' ', 'keydown');
+        }
+      }
+    }, { passive: true });
+
+    // Left zone: Pong up + Breakout left
+    touchLeft.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      dispatchKey('ArrowUp', 'keydown');
+      dispatchKey('ArrowLeft', 'keydown');
+      touchLeft.style.background = 'rgba(255,255,255,0.1)';
+    }, { passive: false });
+    touchLeft.addEventListener('touchend', () => {
+      dispatchKey('ArrowUp', 'keyup');
+      dispatchKey('ArrowLeft', 'keyup');
+      touchLeft.style.background = '';
+    });
+
+    // Right zone: Pong down + Breakout right
+    touchRight.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      dispatchKey('ArrowDown', 'keydown');
+      dispatchKey('ArrowRight', 'keydown');
+      touchRight.style.background = 'rgba(255,255,255,0.1)';
+    }, { passive: false });
+    touchRight.addEventListener('touchend', () => {
+      dispatchKey('ArrowDown', 'keyup');
+      dispatchKey('ArrowRight', 'keyup');
+      touchRight.style.background = '';
+    });
   </script>
+
+  <div id="touchOverlay">
+    <div class="touch-row">
+      <div class="touch-zone touch-zone-left" id="touchLeft">◀ LEFT</div>
+      <div class="touch-zone" id="touchRight">RIGHT ▶</div>
+    </div>
+  </div>
+  <div class="touch-hint" id="touchHint">
+    SWIPE FOR SNAKE/TETRIS<br>
+    TAP SIDES FOR PONG<br>
+    TAP SIDES FOR BREAKOUT
+  </div>
 </body>
 </html>

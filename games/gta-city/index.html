@@ -23,6 +23,17 @@ body{background:#0a0a0a;display:flex;flex-direction:column;align-items:center;ju
 #wasted p{font-size:18px;margin-top:10px;color:#ddd}
 #wasted button{margin-top:20px;padding:10px 30px;font-size:16px;background:#fff;color:#000;border:none;cursor:pointer;font-family:inherit}
 #wanted{color:#ff4444;font-size:20px;letter-spacing:2px}
+#touchControls{display:none;position:fixed;bottom:0;left:0;right:0;z-index:50;pointer-events:none}
+#dpad{position:fixed;bottom:30px;left:30px;pointer-events:auto}
+#dpad button{width:55px;height:55px;font-size:22px;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.3);border-radius:10px;color:#fff;position:absolute;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+#dpad button:active{background:rgba(255,255,255,0.35)}
+#dpad .up{left:55px;top:0}
+#dpad .down{left:55px;top:110px}
+#dpad .left{left:0;top:55px}
+#dpad .right{left:110px;top:55px}
+#actionBtns{position:fixed;bottom:30px;right:30px;display:flex;flex-direction:column;gap:8px;pointer-events:auto}
+#actionBtns button{width:60px;height:48px;font-size:11px;font-weight:bold;background:rgba(255,68,68,0.25);border:2px solid rgba(255,68,68,0.5);border-radius:10px;color:#fff;touch-action:manipulation;-webkit-user-select:none;user-select:none;font-family:inherit}
+#actionBtns button:active{background:rgba(255,68,68,0.5)}
 </style>
 </head>
 <body>
@@ -54,6 +65,20 @@ body{background:#0a0a0a;display:flex;flex-direction:column;align-items:center;ju
   <h1>WASTED</h1>
   <p>Survived: <span id="surviveTime">00:00</span></p>
   <button onclick="restartGame()">TRY AGAIN</button>
+</div>
+
+<div id="touchControls">
+  <div id="dpad">
+    <button class="up" data-key="w">▲</button>
+    <button class="down" data-key="s">▼</button>
+    <button class="left" data-key="a">◀</button>
+    <button class="right" data-key="d">▶</button>
+  </div>
+  <div id="actionBtns">
+    <button data-key=" ">ENTER</button>
+    <button data-key="e">ATK</button>
+    <button data-key="q">STEAL</button>
+  </div>
 </div>
 
 <script>
@@ -591,6 +616,17 @@ function restartGame() {
 }
 
 window.onload = init;
+
+// Touch controls - only show on touch devices
+if ('ontouchstart' in window) {
+  document.getElementById('touchControls').style.display = 'block';
+  document.querySelectorAll('#dpad button, #actionBtns button').forEach(btn => {
+    const key = btn.dataset.key;
+    btn.addEventListener('touchstart', e => { e.preventDefault(); keys[key] = true; }, {passive:false});
+    btn.addEventListener('touchend', e => { e.preventDefault(); keys[key] = false; }, {passive:false});
+    btn.addEventListener('touchcancel', e => { keys[key] = false; });
+  });
+}
 </script>
 </body>
 </html>

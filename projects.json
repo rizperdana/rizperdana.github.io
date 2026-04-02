@@ -43,6 +43,14 @@
       "url": "https://wik-wok.vercel.app/",
       "status": "Active",
       "featured": true
+    },
+    {
+      "title": "Browser Games",
+      "description": "Play retro arcade, racing, and open-world crime games directly in your browser. No install needed.",
+      "technologies": ["HTML5 Canvas", "JavaScript", "CSS"],
+      "url": "https://rizperdana.github.io/games/",
+      "status": "Active",
+      "featured": true
     }
   ]
 }

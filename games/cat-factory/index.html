@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>🐱 Cat Factory - Idle Game</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#1a1a2e;color:#e0e0e0;font-family:monospace;min-height:100vh;overflow-x:hidden}
+#app{max-width:900px;margin:0 auto;padding:10px}
+
+/* Stats bar */
+#stats{display:flex;flex-wrap:wrap;gap:8px;padding:10px;background:#0f3460;border-radius:8px;margin-bottom:10px;box-shadow:0 0 0 2px #e94560,4px 4px 0 0 #0a0a1a}
+.stat{flex:1;min-width:100px;text-align:center;padding:6px;background:#16213e;border-radius:4px}
+.stat-label{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:1px}
+.stat-value{font-size:16px;color:#e94560;font-weight:bold}
+
+/* Main layout */
+#main{display:flex;gap:10px;flex-wrap:wrap}
+#factory-panel{flex:1;min-width:280px}
+#upgrades-panel{flex:1;min-width:280px}
+
+/* Factory canvas */
+#factory-box{background:#0f3460;border-radius:8px;padding:8px;box-shadow:0 0 0 2px #e94560,4px 4px 0 0 #0a0a1a;margin-bottom:10px;cursor:pointer;position:relative;overflow:hidden}
+#factory-box:active{box-shadow:0 0 0 2px #ff6b8a,4px 4px 0 0 #0a0a1a}
+#factoryCanvas{width:100%;border-radius:4px;display:block;image-rendering:pixelated}
+#click-hint{text-align:center;font-size:10px;color:#666;margin-top:4px}
+
+/* Floating +1 texts */
+.float-text{position:absolute;color:#e94560;font-weight:bold;font-size:16px;pointer-events:none;animation:floatUp 0.8s ease-out forwards}
+@keyframes floatUp{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(-40px)}}
+
+/* Upgrades */
+#upgrades-panel h2{font-size:14px;color:#e94560;margin-bottom:8px;text-transform:uppercase;letter-spacing:2px}
+.upgrade-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:10px;margin-bottom:6px;background:#16213e;border:2px solid #0f3460;border-radius:6px;color:#e0e0e0;font-family:monospace;font-size:12px;cursor:pointer;transition:all 0.15s;text-align:left}
+.upgrade-btn:hover:not(:disabled){border-color:#e94560;background:#1a2744}
+.upgrade-btn:active:not(:disabled){transform:scale(0.98)}
+.upgrade-btn:disabled{opacity:0.4;cursor:not-allowed}
+.upgrade-btn .up-name{font-weight:bold;color:#e94560}
+.upgrade-btn .up-rate{font-size:10px;color:#888}
+.upgrade-btn .up-cost{color:#ffcc00;font-weight:bold}
+.upgrade-btn .up-owned{font-size:10px;color:#666}
+
+/* Cat types */
+#cat-types{margin-top:10px;background:#0f3460;border-radius:8px;padding:10px;box-shadow:0 0 0 2px #e94560,4px 4px 0 0 #0a0a1a}
+#cat-types h3{font-size:12px;color:#e94560;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
+.cat-type{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:12px}
+.cat-type.locked{opacity:0.3}
+.cat-type .ct-icon{width:20px;height:20px;border-radius:3px}
+.cat-type .ct-name{flex:1}
+.cat-type .ct-mult{color:#ffcc00;font-size:10px}
+.cat-type .ct-req{color:#666;font-size:10px}
+
+/* Prestige */
+#prestige-box{margin-top:10px;background:#0f3460;border-radius:8px;padding:10px;box-shadow:0 0 0 2px #e94560,4px 4px 0 0 #0a0a1a;text-align:center}
+#prestige-box h3{font-size:12px;color:#e94560;margin-bottom:6px;text-transform:uppercase}
+#prestige-box p{font-size:11px;color:#888;margin-bottom:8px}
+#prestige-btn{padding:10px 24px;background:#e94560;color:#fff;border:none;border-radius:6px;font-family:monospace;font-size:13px;font-weight:bold;cursor:pointer;transition:all 0.15s}
+#prestige-btn:hover:not(:disabled){background:#ff6b8a}
+#prestige-btn:disabled{opacity:0.3;cursor:not-allowed}
+
+/* Save indicator */
+#save-ind{position:fixed;top:10px;right:10px;font-size:10px;color:#444;opacity:0;transition:opacity 0.3s}
+#save-ind.show{opacity:1}
+
+@media(max-width:600px){
+  #main{flex-direction:column}
+  .stat{min-width:70px}
+  .stat-value{font-size:13px}
+  .upgrade-btn{padding:8px;font-size:11px}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="stats">
+    <div class="stat"><div class="stat-label">Cats</div><div class="stat-value" id="s-cats">0</div></div>
+    <div class="stat"><div class="stat-label">Per Sec</div><div class="stat-value" id="s-cps">0</div></div>
+    <div class="stat"><div class="stat-label">Cat Coins</div><div class="stat-value" id="s-cc">0</div></div>
+    <div class="stat"><div class="stat-label">Cat Type</div><div class="stat-value" id="s-type" style="font-size:12px">Regular</div></div>
+    <div class="stat"><div class="stat-label">Prestige</div><div class="stat-value" id="s-pres">Lv 0</div></div>
+    <div class="stat"><div class="stat-label">Time</div><div class="stat-value" id="s-time">00:00</div></div>
+  </div>
+
+  <div id="main">
+    <div id="factory-panel">
+      <div id="factory-box" onclick="manualProduce(event)">
+        <canvas id="factoryCanvas"></canvas>
+        <div id="click-hint">TAP TO PRODUCE CATS</div>
+      </div>
+    </div>
+
+    <div id="upgrades-panel">
+      <h2>Upgrades</h2>
+      <div id="upgrades-list"></div>
+
+      <div id="cat-types">
+        <h3>Cat Types</h3>
+        <div id="cat-types-list"></div>
+      </div>
+
+      <div id="prestige-box">
+        <h3>Prestige</h3>
+        <p id="prestige-info">Reset progress for a permanent multiplier. Requires 10,000 CC.</p>
+        <button id="prestige-btn" onclick="doPrestige()" disabled>PRESTIGE</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="save-ind">💾 Saved</div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────────────────
+const UPGRADES = [
+  { name: 'Auto-Feeder',   rate: 1,   baseCost: 10 },
+  { name: 'Cat Breeder',   rate: 5,   baseCost: 100 },
+  { name: 'Robot Arm',     rate: 20,  baseCost: 500 },
+  { name: 'Cat Portal',    rate: 100, baseCost: 5000 },
+  { name: 'Quantum Cloner',rate: 500, baseCost: 50000 },
+];
+
+const CAT_TYPES = [
+  { name: 'Regular Cat', mult: 1,    req: 0,      color: '#888888' },
+  { name: 'Chonky Cat',  mult: 2,    req: 100,    color: '#ff8844' },
+  { name: 'Ninja Cat',   mult: 5,    req: 1000,   color: '#333333' },
+  { name: 'Golden Cat',  mult: 10,   req: 10000,  color: '#ffcc00' },
+  { name: 'Cosmic Cat',  mult: 50,   req: 100000, color: '#aa44ff' },
+];
+
+// 8x8 pixel cat sprite (1 = filled, 0 = empty)
+const CAT_SPRITE = [
+  [0,1,1,0,0,1,1,0],
+  [1,1,1,1,1,1,1,1],
+  [1,0,1,1,1,1,0,1],
+  [1,1,1,1,1,1,1,1],
+  [1,1,0,1,1,0,1,1],
+  [1,1,1,1,1,1,1,1],
+  [0,1,1,1,1,1,1,0],
+  [0,0,1,0,0,1,0,0],
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────
+let state = {
+  totalCats: 0,
+  currency: 0,
+  upgrades: [0, 0, 0, 0, 0],
+  catTypeUnlocked: [true, false, false, false, false],
+  prestigeLevel: 0,
+  playTime: 0,
+};
+
+let cats = []; // animated cat sprites on canvas
+let canvas, ctx;
+let lastTick = Date.now();
+
+// ─── SAVE/LOAD ────────────────────────────────────────────────────────
+function saveGame() {
+  const data = JSON.stringify(state);
+  const encoded = btoa(unescape(encodeURIComponent(data)));
+  document.cookie = `catfactory=${encoded};max-age=${365*24*3600};path=/;SameSite=Lax`;
+  const ind = document.getElementById('save-ind');
+  ind.classList.add('show');
+  setTimeout(() => ind.classList.remove('show'), 1000);
+}
+
+function loadGame() {
+  const match = document.cookie.match(/catfactory=([^;]+)/);
+  if (match) {
+    try {
+      const data = decodeURIComponent(escape(atob(match[1])));
+      const saved = JSON.parse(data);
+      state = { ...state, ...saved };
+    } catch(e) { console.warn('Failed to load save', e); }
+  }
+}
+
+// ─── CALCULATIONS ─────────────────────────────────────────────────────
+function getUpgradeCost(idx) {
+  return Math.floor(UPGRADES[idx].baseCost * Math.pow(1.5, state.upgrades[idx]));
+}
+
+function getCatsPerSecond() {
+  let base = 0;
+  for (let i = 0; i < UPGRADES.length; i++) {
+    base += UPGRADES[i].rate * state.upgrades[i];
+  }
+  const mult = getCatValueMultiplier();
+  const prestigeMult = Math.pow(1.5, state.prestigeLevel);
+  return base * mult * prestigeMult;
+}
+
+function getBestCatType() {
+  let best = 0;
+  for (let i = CAT_TYPES.length - 1; i >= 0; i--) {
+    if (state.totalCats >= CAT_TYPES[i].req) { best = i; break; }
+  }
+  return best;
+}
+
+function getCatValueMultiplier() {
+  return CAT_TYPES[getBestCatType()].mult;
+}
+
+function getPrestigeMult() {
+  return Math.pow(1.5, state.prestigeLevel);
+}
+
+// ─── PRODUCTION ───────────────────────────────────────────────────────
+function manualProduce(e) {
+  const mult = getCatValueMultiplier() * getPrestigeMult();
+  state.totalCats += mult;
+  state.currency += mult;
+  spawnCat();
+  showFloatText(e);
+  checkUnlocks();
+  updateUI();
+}
+
+function autoProduce(dt) {
+  const cps = getCatsPerSecond();
+  if (cps > 0) {
+    const produced = cps * dt;
+    state.totalCats += produced;
+    state.currency += produced;
+    // Spawn visual cats occasionally
+    if (Math.random() < dt * Math.min(cps, 10)) spawnCat();
+  }
+}
+
+function buyUpgrade(idx) {
+  const cost = getUpgradeCost(idx);
+  if (state.currency >= cost) {
+    state.currency -= cost;
+    state.upgrades[idx]++;
+    updateUI();
+  }
+}
+
+function checkUnlocks() {
+  for (let i = 0; i < CAT_TYPES.length; i++) {
+    if (!state.catTypeUnlocked[i] && state.totalCats >= CAT_TYPES[i].req) {
+      state.catTypeUnlocked[i] = true;
+    }
+  }
+}
+
+function doPrestige() {
+  if (state.currency < 10000) return;
+  state.prestigeLevel++;
+  state.totalCats = 0;
+  state.currency = 0;
+  state.upgrades = [0, 0, 0, 0, 0];
+  state.catTypeUnlocked = [true, false, false, false, false];
+  cats = [];
+  updateUI();
+  saveGame();
+}
+
+// ─── CANVAS / PIXEL CATS ─────────────────────────────────────────────
+function initCanvas() {
+  canvas = document.getElementById('factoryCanvas');
+  ctx = canvas.getContext('2d');
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+}
+
+function resizeCanvas() {
+  const box = document.getElementById('factory-box');
+  canvas.width = box.clientWidth - 16;
+  canvas.height = Math.min(300, Math.max(180, window.innerHeight * 0.3));
+}
+
+function spawnCat() {
+  const bestType = getBestCatType();
+  const color = CAT_TYPES[bestType].color;
+  cats.push({
+    x: Math.random() * (canvas.width - 24) + 12,
+    y: Math.random() * (canvas.height - 24) + 12,
+    vx: (Math.random() - 0.5) * 2,
+    vy: (Math.random() - 0.5) * 2,
+    color: color,
+    size: 2 + Math.floor(Math.random() * 2),
+    life: 300 + Math.random() * 300,
+    frame: Math.random() * Math.PI * 2,
+  });
+  // Limit cats on screen
+  if (cats.length > 50) cats.shift();
+}
+
+function drawCatSprite(x, y, size, color, frame) {
+  const bounce = Math.sin(frame) * 2;
+  ctx.fillStyle = color;
+  for (let row = 0; row < CAT_SPRITE.length; row++) {
+    for (let col = 0; col < CAT_SPRITE[row].length; col++) {
+      if (CAT_SPRITE[row][col]) {
+        ctx.fillRect(
+          x + col * size,
+          y + row * size + bounce,
+          size - 0.5,
+          size - 0.5
+        );
+      }
+    }
+  }
+  // Eyes
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(x + 2 * size, y + 2 * size + bounce, size, size);
+  ctx.fillRect(x + 5 * size, y + 2 * size + bounce, size, size);
+  ctx.fillStyle = '#000';
+  ctx.fillRect(x + 2 * size + 0.5, y + 2 * size + 0.5 + bounce, size * 0.6, size * 0.6);
+  ctx.fillRect(x + 5 * size + 0.5, y + 2 * size + 0.5 + bounce, size * 0.6, size * 0.6);
+}
+
+function renderFactory() {
+  ctx.fillStyle = '#0a0a1a';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Grid lines
+  ctx.strokeStyle = '#111122';
+  ctx.lineWidth = 0.5;
+  for (let x = 0; x < canvas.width; x += 20) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+  }
+  for (let y = 0; y < canvas.height; y += 20) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+  }
+
+  // Factory conveyor belt
+  const beltY = canvas.height - 20;
+  ctx.fillStyle = '#16213e';
+  ctx.fillRect(0, beltY, canvas.width, 20);
+  ctx.fillStyle = '#0f3460';
+  for (let x = (Date.now() / 30) % 20; x < canvas.width; x += 20) {
+    ctx.fillRect(x, beltY + 5, 10, 10);
+  }
+
+  // Draw cats
+  for (const cat of cats) {
+    drawCatSprite(cat.x, cat.y, cat.size, cat.color, cat.frame);
+  }
+
+  // Factory label
+  ctx.fillStyle = '#e94560';
+  ctx.font = 'bold 11px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('🏭 CAT FACTORY 🏭', canvas.width / 2, 14);
+}
+
+function updateCats(dt) {
+  for (let i = cats.length - 1; i >= 0; i--) {
+    const cat = cats[i];
+    cat.x += cat.vx;
+    cat.y += cat.vy;
+    cat.frame += 0.1;
+    cat.life -= 1;
+
+    // Bounce off walls
+    if (cat.x < 0 || cat.x > canvas.width - cat.size * 8) cat.vx *= -1;
+    if (cat.y < 16 || cat.y > canvas.height - 24 - cat.size * 8) cat.vy *= -1;
+    cat.x = Math.max(0, Math.min(canvas.width - cat.size * 8, cat.x));
+    cat.y = Math.max(16, Math.min(canvas.height - 24 - cat.size * 8, cat.y));
+
+    if (cat.life <= 0) cats.splice(i, 1);
+  }
+}
+
+function showFloatText(e) {
+  const box = document.getElementById('factory-box');
+  const rect = box.getBoundingClientRect();
+  const el = document.createElement('div');
+  el.className = 'float-text';
+  const mult = getCatValueMultiplier() * getPrestigeMult();
+  el.textContent = `+${mult}`;
+  el.style.left = (e.clientX - rect.left) + 'px';
+  el.style.top = (e.clientY - rect.top) + 'px';
+  box.appendChild(el);
+  setTimeout(() => el.remove(), 800);
+}
+
+// ─── UI ───────────────────────────────────────────────────────────────
+function formatNum(n) {
+  if (n >= 1e12) return (n / 1e12).toFixed(1) + 'T';
+  if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
+  if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+  if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+  return Math.floor(n).toString();
+}
+
+function updateUI() {
+  document.getElementById('s-cats').textContent = formatNum(state.totalCats);
+  document.getElementById('s-cps').textContent = formatNum(getCatsPerSecond());
+  document.getElementById('s-cc').textContent = formatNum(state.currency);
+  document.getElementById('s-type').textContent = CAT_TYPES[getBestCatType()].name;
+  document.getElementById('s-pres').textContent = 'Lv ' + state.prestigeLevel;
+
+  const mins = Math.floor(state.playTime / 60);
+  const secs = Math.floor(state.playTime % 60);
+  document.getElementById('s-time').textContent =
+    String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+
+  // Upgrades
+  const list = document.getElementById('upgrades-list');
+  list.innerHTML = '';
+  for (let i = 0; i < UPGRADES.length; i++) {
+    const cost = getUpgradeCost(i);
+    const btn = document.createElement('button');
+    btn.className = 'upgrade-btn';
+    btn.disabled = state.currency < cost;
+    btn.innerHTML = `
+      <div>
+        <div class="up-name">${UPGRADES[i].name}</div>
+        <div class="up-rate">+${UPGRADES[i].rate} cats/sec</div>
+      </div>
+      <div style="text-align:right">
+        <div class="up-cost">${formatNum(cost)} CC</div>
+        <div class="up-owned">Owned: ${state.upgrades[i]}</div>
+      </div>
+    `;
+    btn.addEventListener('click', () => buyUpgrade(i));
+    list.appendChild(btn);
+  }
+
+  // Cat types
+  const ctList = document.getElementById('cat-types-list');
+  ctList.innerHTML = '';
+  for (let i = 0; i < CAT_TYPES.length; i++) {
+    const unlocked = state.catTypeUnlocked[i];
+    const div = document.createElement('div');
+    div.className = 'cat-type' + (unlocked ? '' : ' locked');
+    div.innerHTML = `
+      <div class="ct-icon" style="background:${CAT_TYPES[i].color}"></div>
+      <div class="ct-name">${CAT_TYPES[i].name}</div>
+      <div class="ct-mult">${CAT_TYPES[i].mult}x</div>
+      <div class="ct-req">${unlocked ? '✓' : formatNum(CAT_TYPES[i].req) + ' cats'}</div>
+    `;
+    ctList.appendChild(div);
+  }
+
+  // Prestige
+  const canPrestige = state.currency >= 10000;
+  document.getElementById('prestige-btn').disabled = !canPrestige;
+  const nextMult = Math.pow(1.5, state.prestigeLevel + 1);
+  document.getElementById('prestige-info').textContent =
+    `Current: ${getPrestigeMult().toFixed(2)}x → Next: ${nextMult.toFixed(2)}x multiplier. Resets upgrades & currency.`;
+}
+
+// ─── GAME LOOP ────────────────────────────────────────────────────────
+function gameLoop() {
+  const now = Date.now();
+  const dt = Math.min((now - lastTick) / 1000, 0.1);
+  lastTick = now;
+
+  state.playTime += dt;
+  autoProduce(dt);
+  updateCats(dt);
+  renderFactory();
+  updateUI();
+
+  requestAnimationFrame(gameLoop);
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+function init() {
+  loadGame();
+  initCanvas();
+
+  // Spawn some initial cats
+  for (let i = 0; i < 3; i++) spawnCat();
+
+  lastTick = Date.now();
+  gameLoop();
+
+  // Auto-save every 30 seconds
+  setInterval(saveGame, 30000);
+
+  // Save on page unload
+  window.addEventListener('beforeunload', saveGame);
+}
+
+window.onload = init;
+</script>
+</body>
+</html>
