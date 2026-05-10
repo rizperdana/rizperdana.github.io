@@ -297,23 +297,15 @@
       }
 
       container.innerHTML = projectsData.projects.map(project => `
-        <div class="bg-gradient-to-br from-flexoki-bg-2/40 to-flexoki-bg/40 rounded-xl p-5 border border-white/5 hover:border-flexoki-success/30 transition-all">
-          <h3 class="text-lg font-bold text-flexoki-text mb-2">${project.title || 'Untitled'}</h3>
+        <a href="${project.url || '#'}" target="_blank" class="block bg-gradient-to-br from-flexoki-bg-2/40 to-flexoki-bg/40 rounded-xl p-5 border border-white/5 hover:border-flexoki-success/30 transition-all">
+          <h3 class="text-lg font-bold text-flexoki-text mb-2 hover:text-flexoki-success transition-colors">${project.title || 'Untitled'} <span class="text-xs text-flexoki-subtle">↗</span></h3>
           <p class="text-flexoki-muted text-sm mb-3">${project.description || ''}</p>
           <div class="flex flex-wrap gap-2 mb-3">
             ${(project.technologies || []).slice(0, 4).map(tech => 
               `<span class="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-flexoki-success">${tech}</span>`
             ).join('')}
           </div>
-          ${project.url ? `
-            <a href="${project.url}" target="_blank" class="text-flexoki-success hover:text-flexoki-warning text-sm inline-flex items-center gap-1">
-              View Project 
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-          ` : ''}
-        </div>
+        </a>
       `).join('');
     }
 
@@ -469,6 +461,86 @@
         y += sectionSpacing;
       }
 
+      // Projects Section (from projects.json)
+      if (projectsData && projectsData.projects && projectsData.projects.length > 0) {
+        checkPageBreak(100);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(12);
+        doc.setTextColor(28, 27, 26);
+        doc.text('PROJECTS', margin, y);
+        y += subsectionSpacing;
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(10);
+        doc.setTextColor(28, 27, 26);
+
+        projectsData.projects.forEach((project) => {
+          const projectTitle = project.title || 'Untitled Project';
+          const projectDesc = project.description || '';
+          const technologies = (project.technologies || []).slice(0, 5).join(', ');
+          const projectUrl = project.url || '';
+
+          const titleLines = doc.splitTextToSize(projectTitle, maxWidth);
+          const descLines = doc.splitTextToSize(projectDesc, maxWidth - 10);
+          const techLines = doc.splitTextToSize(`Tech: ${technologies}`, maxWidth - 10);
+          
+          const totalHeight = (titleLines.length + descLines.length + techLines.length + 1) * lineHeight + 10;
+          checkPageBreak(totalHeight);
+
+          // Project title (bold) with URL link
+          doc.setFont('helvetica', 'bold');
+          if (projectUrl) {
+            doc.setTextColor(0, 100, 180);
+            // Get actual text width and add link annotation
+            const linkText = titleLines.join(' ');
+            doc.text(linkText, margin, y);
+            // Calculate link position (approximate for multiline)
+            const textWidth = doc.getTextWidth(linkText);
+            doc.link(margin, y - 10, textWidth, 12, { url: projectUrl });
+          } else {
+            doc.setTextColor(28, 27, 26);
+            doc.text(titleLines.join(' '), margin, y);
+          }
+          y += titleLines.length * lineHeight;
+
+          // Description
+          doc.setFont('helvetica', 'normal');
+          doc.setTextColor(100, 100, 100);
+          doc.text(descLines, margin + 5, y);
+          y += descLines.length * lineHeight;
+
+          // Technologies
+          doc.setTextColor(67, 133, 190);
+          doc.text(techLines, margin + 5, y);
+          y += techLines.length * lineHeight;
+
+          y += 8;
+        });
+      }
+
+      // Languages Section (keep at the end for better ordering)
+      checkPageBreak(50);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.setTextColor(28, 27, 26);
+      doc.text('LANGUAGES', margin, y);
+      y += subsectionSpacing;
+
+      if (profileData.languages && profileData.languages.length > 0) {
+        profileData.languages.forEach(lang => {
+          const langText = `${lang.name}: ${lang.level}`;
+          const langLines = doc.splitTextToSize(langText, maxWidth);
+          const height = langLines.length * lineHeight + 5;
+          checkPageBreak(height);
+          
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(10);
+          doc.setTextColor(60, 60, 60);
+          doc.text(langLines, margin, y);
+          y += langLines.length * lineHeight + 5;
+        });
+      }
+
       // Skills Section
       checkPageBreak(100);
       doc.setFont('helvetica', 'bold');
@@ -523,23 +595,6 @@
           }
         });
         y += 4;
-      }
-
-      // Languages Section
-      checkPageBreak(50);
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(12);
-      doc.text('LANGUAGES', margin, y);
-      y += subsectionSpacing;
-
-      if (profileData.languages && profileData.languages.length > 0) {
-        const languagesText = profileData.languages
-          .map(lang => `${lang.name}: ${lang.level}`)
-          .join(' | ');
-
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(10);
-        writeWrapped(languagesText, margin, 10, maxWidth);
       }
 
       doc.save('Rizki_Perdana_CV.pdf');

@@ -1,29 +1,33 @@
 {
   "projects": [
     {
-      "title": "semgrepll",
+      "title": "99 SME Marketplace",
+      "description": "Online procurement B2B provider for client companies",
+      "technologies": ["REST API", "React", "RDBMS Database", "AWS"],
+      "url": "https://www.sourcesage.co",
+      "status": "Active",
+      "featured": false
+    },
+    {
+      "title": "Core Marketplace Order Processing",
+      "description": "Core processing Order integrated with many financial payment gateway",
+      "technologies": ["REST API", "React", "RDBMS Database", "AWS"],
+      "url": "https://www.sourcesage.co",
+      "status": "Active",
+      "featured": false
+    },
+    {
+      "title": "Semgrepll",
       "description": "Local semantic code search - 100% offline AI-powered grep using embeddings. Supports llama.cpp, ONNX, and Ollama backends.",
-      "technologies": [
-        "Python",
-        "LanceDB",
-        "SQLite",
-        "Ollama",
-        "ONNX Runtime",
-        "llama.cpp"
-      ],
+      "technologies": ["Python", "LanceDB", "SQLite", "Ollama", "ONNX Runtime", "llama.cpp"],
       "url": "https://github.com/rizperdana/semgrepll",
       "status": "Active",
       "featured": true
     },
     {
-      "title": "PindahKerja",
-      "description": "Job search and career transition platform helping professionals find their next opportunity",
-      "technologies": [
-        "Next.js",
-        "React",
-        "TypeScript",
-        "Vercel"
-      ],
+      "title": "RealityCheck",
+      "description": "Job consultation and career transition platform helping professionals find their next opportunity",
+      "technologies": ["Next.js", "React", "TypeScript", "Vercel"],
       "url": "https://pindahkerja.vercel.app/",
       "status": "Active",
       "featured": true
@@ -31,26 +35,11 @@
     {
       "title": "Wikwok",
       "description": "A high-engagement, vertical-scroll discovery engine that transforms Wikipedia content into a localized, social-media-style learning experience.",
-      "technologies": [
-        "Next.js 15",
-        "React Compiler",
-        "TypeScript",
-        "Supabase",
-        "TanStack Query",
-        "Framer Motion",
-        "Vercel Edge"
-      ],
+      "technologies": ["Next.js 15", "React Compiler", "TypeScript", "Supabase", "TanStack Query", "Framer Motion", "Vercel Edge"],
       "url": "https://wik-wok.vercel.app/",
       "status": "Active",
       "featured": true
-    },
-    {
-      "title": "Browser Games",
-      "description": "Play retro arcade, racing, and open-world crime games directly in your browser. No install needed.",
-      "technologies": ["HTML5 Canvas", "JavaScript", "CSS"],
-      "url": "https://rizperdana.github.io/games/",
-      "status": "Active",
-      "featured": true
     }
+    
   ]
 }
