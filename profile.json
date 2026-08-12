@@ -12,28 +12,25 @@
     "experience": [
         {
             "company": "SourceSage",
-            "title": "Senior Software Engineer",
             "location": "Singapore",
-            "period": "Jul 2026 - Present",
-            "achievements": [
-                "Architected end-to-end high-performance systems and RESTful APIs handling millions of daily B2B requests.",
-                "Enhanced user interfaces and system architecture, increasing platform reliability by 40% and reducing latency by 60%.",
-                "Integrated AI and Large Language Models (LLMs) into core features to drive advanced automation and product intelligence.",
-                "Streamlined CI/CD pipelines and automated deployment strategies, reducing delivery time by 50% and deployment failures by 75%.",
-                "Mentored engineering teams on full-stack best practices, coding standards, and scalable system design."
-            ]
-        },
-        {
-            "company": "SourceSage",
-            "title": "Software Engineer",
-            "location": "Singapore",
-            "period": "Mar 2022 - Jun 2026",
-            "achievements": [
-                "Architected end-to-end high-performance systems and RESTful APIs handling millions of daily B2B requests.",
-                "Enhanced user interfaces and system architecture, increasing platform reliability by 40% and reducing latency by 60%.",
-                "Integrated AI and Large Language Models (LLMs) into core features to drive advanced automation and product intelligence.",
-                "Streamlined CI/CD pipelines and automated deployment strategies, reducing delivery time by 50% and deployment failures by 75%.",
-                "Mentored engineering teams on full-stack best practices, coding standards, and scalable system design."
+            "roles": [
+                {
+                    "title": "Senior Software Engineer",
+                    "period": "Jul 2026 - Present",
+                    "achievements": [
+                        "Integrated AI and Large Language Models (LLMs) into core features to drive advanced automation and product intelligence.",
+                        "Architected end-to-end high-performance systems and RESTful APIs handling millions of daily B2B requests.",
+                        "Mentored engineering teams on full-stack best practices, coding standards, and scalable system design."
+                    ]
+                },
+                {
+                    "title": "Software Engineer",
+                    "period": "Mar 2022 - Jun 2026",
+                    "achievements": [
+                        "Enhanced user interfaces and system architecture, increasing platform reliability by 40% and reducing latency by 60%.",
+                        "Streamlined CI/CD pipelines and automated deployment strategies, reducing delivery time by 50% and deployment failures by 75%."
+                    ]
+                }
             ]
         },
         {
