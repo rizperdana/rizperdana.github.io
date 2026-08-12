@@ -1,6 +1,6 @@
 {
     "name": "Rizki Perdana",
-    "title": "Software Engineer",
+    "title": "Software Engineer | Fullstack Developer | Machine Learning",
     "contacts": [
         "+62 8960 1361 061",
         "perdana.rizki16@gmail.com",
@@ -8,47 +8,60 @@
         "https://rizperdana.github.io/",
         "Yogyakarta, Indonesia"
     ],
-    "summary": "Software Engineer with 6+ years of experience delivering end-to-end web solutions. Expert in full-stack development, designing scalable APIs, crafting responsive UIs, and managing automated deployments. Proven track record in optimizing system performance and integrating AI to drive product innovation.",
+    "summary": "Passionate Software Engineer with 6+ years experience building scalable web applications using Python, Ruby, PHP, and JavaScript. Skilled in API design, database optimization (MySQL, PostgreSQL, Elasticsearch), and automating workflows with Celery, Docker, and CI/CD. Ready to drive innovation and deliver high-quality solutions.",
     "experience": [
         {
             "company": "SourceSage",
-            "title": "Software Engineer",
+            "title": "Senior Software Engineer",
             "location": "Singapore",
-            "period": "Mar 2022 - Present",
+            "period": "Jul 2026 - Present",
             "achievements": [
                 "Architected end-to-end high-performance systems and RESTful APIs handling millions of daily B2B requests.",
                 "Enhanced user interfaces and system architecture, increasing platform reliability by 40% and reducing latency by 60%.",
-                "Integrated AI and large language models into core features to drive advanced automation and product intelligence.",
-                "Streamlined CI/CD pipelines and automated deployment strategies, reducing delivery time by 50% and failures by 75%.",
+                "Integrated AI and Large Language Models (LLMs) into core features to drive advanced automation and product intelligence.",
+                "Streamlined CI/CD pipelines and automated deployment strategies, reducing delivery time by 50% and deployment failures by 75%.",
                 "Mentored engineering teams on full-stack best practices, coding standards, and scalable system design."
             ]
         },
         {
-            "company": "PT. Gamatechno Indonesia",
+            "company": "SourceSage",
             "title": "Software Engineer",
-            "location": "Yogyakarta, Indonesia",
+            "location": "Singapore",
+            "period": "Mar 2022 - Jun 2026",
+            "achievements": [
+                "Architected end-to-end high-performance systems and RESTful APIs handling millions of daily B2B requests.",
+                "Enhanced user interfaces and system architecture, increasing platform reliability by 40% and reducing latency by 60%.",
+                "Integrated AI and Large Language Models (LLMs) into core features to drive advanced automation and product intelligence.",
+                "Streamlined CI/CD pipelines and automated deployment strategies, reducing delivery time by 50% and deployment failures by 75%.",
+                "Mentored engineering teams on full-stack best practices, coding standards, and scalable system design."
+            ]
+        },
+        {
+            "company": "Binar Academy",
+            "title": "Software Engineer",
+            "location": "Jakarta, Indonesia",
             "period": "Feb 2020 - Feb 2022",
             "achievements": [
                 "Developed full-stack microservices and intuitive interfaces supporting diverse client applications and requirements.",
-                "Engineered robust API contracts and deployment workflows that improved cross-team delivery efficiency by 30%.",
+                "Engineered robust API contracts and deployment workflows, improving cross-team delivery efficiency by 30%.",
                 "Synchronized frontend UI components with backend logic to ensure seamless integration and high-performance user experiences."
             ]
         },
         {
-            "company": "PT. Diginet Media",
+            "company": "PT Gamatechno Indonesia",
             "title": "Software Engineer",
             "location": "Yogyakarta, Indonesia",
-            "period": "Sep 2014 - Jan 2016",
+            "period": "Feb 2018 - Feb 2020",
             "achievements": [
                 "Built and deployed full-stack web applications featuring dynamic UIs and secure, scalable backend architectures.",
                 "Developed RESTful API services and managed deployments for platforms supporting thousands of daily active users.",
-                "Implemented secure authentication and data protection systems across the entire application stack."
+                "Implemented secure authentication and data protection systems across the entire application stack to safeguard sensitive business information."
             ]
         }
     ],
     "education": {
         "institution": "Yogyakarta State University",
-        "degree": "Bachelor of Accounting",
+        "degree": "Bachelor Degree, Accounting",
         "location": "Yogyakarta, Indonesia",
         "period": "2016 - 2020"
     },
@@ -56,8 +69,8 @@
         "Programming Languages": "Python, Ruby, JavaScript, PHP, SQL, Shell Scripting",
         "Frontend Development": "React, Vue.js, UI/UX Implementation, Responsive Design, Component Architecture",
         "Full-Stack Development": "REST APIs, Microservices, Event-Driven Architecture, Distributed Systems",
-        "Database Technologies": "Relational Databases (MySQL, PostgreSQL), NoSQL, Data Modeling, Transaction Management",
-        "Deployment & DevOps": "CI/CD Pipelines, Containerization, Infrastructure as Code, Cloud Platforms, Automated Testing",
+        "Database Technologies": "Relational Databases (MySQL, PostgreSQL), NoSQL, Data Modeling, Transaction Management, Elasticsearch",
+        "Deployment & DevOps": "CI/CD Pipelines, Containerization, Infrastructure as Code, Cloud Platforms, Automated Testing, Docker, Celery",
         "AI & Machine Learning": "LLM Integration, OpenCLAW, RAG (Retrieval-Augmented Generation), AI Programming, NLP, Workflow Automation, Intelligent Systems Design",
         "Performance & Scalability": "System Optimization, Caching, Load Balancing, Performance Monitoring",
         "Development Practices": "Agile, Code Review, Technical Documentation, Security Best Practices"
@@ -65,11 +78,15 @@
     "languages": [
         {
             "name": "English",
-            "level": "Professional Proficiency"
+            "level": "Professional Working"
         },
         {
-            "name": "Indonesia",
+            "name": "Indonesian",
             "level": "Native"
         }
+    ],
+    "certifications": [
+        "SQL",
+        "Python"
     ]
 }
