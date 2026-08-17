@@ -1,18 +1,19 @@
 {
   "posts": [
     {
-      "slug": "building-reliable-llm-pipelines-with-structured-output",
-      "title": "Building Reliable LLM Pipelines with Structured Output and Validation",
-      "excerpt": "A practical guide to extracting reliable, typed structured output from LLMs using constrained decoding, schema validation, and retry strategies \u2014 moving from fragile prompt hacks to production-grade pipelines.",
-      "date": "2026-03-28",
-      "category": "AI & LLMs",
+      "slug": "anti-slop-typescript-linter",
+      "title": "Anti-Slop: TypeScript Linter Rules for Rejecting Low-Quality Code",
+      "excerpt": "Anti-slop is a set of opinionated Oxlint rules that reject low-evidence TypeScript and JavaScript patterns — including the AI-generated slop that LLMs commonly produce.",
+      "date": "2026-08-17",
+      "category": "Software Engineering",
       "tags": [
-        "llm",
-        "python",
-        "software-engineering",
-        "ai",
-        "structured-output",
-        "pydantic"
+        "typescript",
+        "oxlint",
+        "linting",
+        "code-quality",
+        "static-analysis",
+        "ai-generated-code",
+        "software-engineering"
       ]
     },
     {
