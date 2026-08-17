@@ -218,7 +218,7 @@
 
       // Try to load markdown file
       try {
-        const res = await fetch(`../posts/${slug}.md`);
+        const res = await fetch(`../posts/${slug}.md?v=1774725600`);
         if (res.ok) {
           content = await res.text();
         }
@@ -230,7 +230,8 @@
         throw new Error('Markdown file not found');
       }
 
-      // Store rendered content
+      // Strip YAML frontmatter before rendering
+      content = content.replace(/^---[\s\S]*?---\n*/, '');
       currentPost.content = marked.parse(content);
     }
 

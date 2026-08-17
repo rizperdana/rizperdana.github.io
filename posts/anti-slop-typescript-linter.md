@@ -9,37 +9,69 @@ description: "Anti-slop is a set of opinionated Oxlint rules for TypeScript and 
 
 > **TL;DR**: Anti-slop is an open-source Oxlint plugin with 15 opinionated rules that reject low-evidence TypeScript and JavaScript patterns — including the sloppy type assertions, `unknown` sprawl, and module mocking that AI code generators commonly produce. It's trending today as developers fight back against AI-generated code rot.
 
-Every codebase accumulates entropy. In 2026, AI code generators accelerated the process: they churn out TypeScript that *looks* reasonable but smuggles in type assertions, `unknown` return types, and mock-heavy test patterns that silently degrade reliability. [Anti-slop](https://github.com/dmmulroy/anti-slop) by [dmmulroy](https://github.com/dmmulroy) is a set of opinionated [Oxlint](https://oxc.rs) rules that catch exactly these patterns before they land on `main`.
+![Anti-Slop: Opinionated Oxlint rules for TypeScript and JavaScript](https://opengraph.githubassets.com/e5a5a27310df3babeb8f701b4ab881ffeba520dfc649b71740b28fe711d2da01/dmmulroy/anti-slop)
+
+*The anti-slop repo — trending on GitHub August 17, 2026*
+
+## Picture This
+
+You're reviewing a pull request. The code *works* — tests pass, CI is green. But something feels off.
+
+`const user = input as object as User;`
+
+`function handle(input: unknown) {}`
+
+`vi.mock("./user-store");`
+
+Your reviewer instinct screams: *this is slop*. TypeScript that type-checks but says nothing. Code that erases evidence instead of preserving it. Welcome to the AI-generated code era — and [anti-slop](https://github.com/dmmulroy/anti-slop) is the linter built to fight it.
 
 ## What Is Anti-Slop?
 
-Anti-slop is a vendored Oxlint plugin (not an npm dependency) containing 15 lint rules that reject TypeScript and JavaScript patterns considered low-evidence or low-signal. It's designed to be copied into your repository, read, and modified to match your team's standards — not treated as a fixed dependency.
+Anti-slop is a set of 15 opinionated [Oxlint](https://oxc.rs) rules that reject low-evidence TypeScript and JavaScript patterns. Created by [dmmulroy](https://github.com/dmmulroy), it's designed to be **vendored, not installed** — copy the rules into your repo, read them, tweak them, own them.
 
-The project [trended on GitHub](https://trendshift.io/repositories/141355) with [49 new stars](https://github.com/dmmulroy/anti-slop) on August 17, 2026, driven by developer interest in AI-generated code quality tools.
+It [trended on GitHub](https://trendshift.io/repositories/141355) with [49 new stars](https://github.com/dmmulroy/anti-slop) on August 17, 2026. The demand says it all: developers are done letting AI-generated code rot their codebases.
 
-| Feature | Detail |
-|---------|--------|
-| Rules | 15 opinionated lint rules |
-| Linter | Oxlint (Rust-based, fast) |
-| Language | TypeScript and JavaScript |
-| Install | `npx skills add dmmulroy/anti-slop --skill install-anti-slop` |
-| License | MIT |
-| Approach | Vendored — copy into repo, own your config |
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 my-6">
+  <div class="stat bg-flexoki-bg-2 rounded-xl p-4 border border-white/5">
+    <div class="stat-value text-flexoki-primary text-2xl">15</div>
+    <div class="stat-desc text-flexoki-subtle text-sm">Opinionated rules</div>
+  </div>
+  <div class="stat bg-flexoki-bg-2 rounded-xl p-4 border border-white/5">
+    <div class="stat-value text-flexoki-secondary text-2xl">⚡</div>
+    <div class="stat-desc text-flexoki-subtle text-sm">Rust-based Oxlint</div>
+  </div>
+  <div class="stat bg-flexoki-bg-2 rounded-xl p-4 border border-white/5">
+    <div class="stat-value text-flexoki-success text-2xl">MIT</div>
+    <div class="stat-desc text-flexoki-subtle text-sm">Open source</div>
+  </div>
+  <div class="stat bg-flexoki-bg-2 rounded-xl p-4 border border-white/5">
+    <div class="stat-value text-flexoki-accent text-2xl">2s</div>
+    <div class="stat-desc text-flexoki-subtle text-sm">Lint time, large repo</div>
+  </div>
+</div>
 
 ## Why This Matters for AI-Generated Code
 
-Large language models produce TypeScript that type-checks but carries evidence-erasing patterns. Anti-slop targets these patterns with surgical rules:
+Large language models produce TypeScript that *looks* right but carries evidence-erasing patterns. Anti-slop targets the most common tells with surgical precision:
 
-- **`no-chained-type-assertions`** — rejects `input as object as User`, the "double down" pattern that fabricates type evidence
-- **`no-unknown-returns`** — rejects functions returning `unknown` or `Promise<unknown>`, which forces downstream code into defensive casting
-- **`no-module-mocking`** — rejects `vi.mock()` and `jest.mock()`, nudging toward real dependency seams instead of wholesale fakes
-- **`no-widen-then-assert`** — catches the loop of widening a type to `unknown` then asserting it back
+- **`no-chained-type-assertions`** — rejects `input as object as User`, the "double down" that fabricates type evidence
+- **`no-unknown-returns`** — rejects functions returning `unknown`, forcing downstream code into defensive casting
+- **`no-module-mocking`** — rejects `vi.mock()` and `jest.mock()`, pushing you toward real dependency seams
+- **`no-widen-then-assert`** — catches the widen-to-`unknown`-then-assert-back loop
 
-These are exactly the patterns an LLM will produce when asked to "make it type-safe" without understanding the codebase's boundary contracts.
+<div class="alert alert-warning my-6 flex items-start gap-3 rounded-xl border border-flexoki-warning/30 bg-flexoki-warning/10 p-4">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0 text-flexoki-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M5 19h14a2 2 0 001.84-2.75L13.74 4a2 2 0 00-3.48 0L3.16 16.25A2 2 0 005 19z" />
+  </svg>
+  <div>
+    <h3 class="font-bold text-flexoki-text">The "AI Slop" Problem</h3>
+    <div class="text-sm text-flexoki-muted mt-1">LLMs generate TypeScript that <strong>type-checks but silently degrades</strong>. Chained assertions, <code>unknown</code> returns, and module mocking are the three most common tells. Anti-slop flags all three.</div>
+  </div>
+</div>
+
+These are exactly the patterns an LLM produces when asked to "make it type-safe" without understanding the codebase's boundary contracts.
 
 ## The Rules in Detail
-
-Anti-slop enforces 15 rules. Here are the most impactful:
 
 ### Type Safety Rules
 
@@ -58,7 +90,7 @@ const stored: unknown = loaded;
 const user = stored as User;
 ```
 
-**Fix:** Use `satisfies` instead of annotation to preserve inference, or use schema validation libraries like [Zod](https://zod.dev) for runtime safety.
+**Fix:** Use `satisfies` to preserve inference, or schema validation with [Zod](https://zod.dev) for runtime safety.
 
 ### Structural Rules
 
@@ -76,7 +108,7 @@ function save(value: object) {}
 interface UserShape { id: string; }
 ```
 
-**Fix:** Type your parameters explicitly. If you truly need polymorphism, use generics or branded types.
+**Fix:** Type your parameters explicitly. Need polymorphism? Use generics or branded types.
 
 ### Runtime Rules
 
@@ -91,26 +123,26 @@ const value = Reflect.get(owner, key);
 if (typeof input === "string") { useName(input); }
 ```
 
-**Fix:** Use typed function calls and property access. For `typeof`, opt into `allowInTypeGuards: true` if your project relies on type predicates.
+**Fix:** Call functions and access properties directly. For `typeof`, opt into `allowInTypeGuards: true` if your project relies on type predicates.
 
 ### Safety Rules
 
 ```typescript
-// ❌ no-chained-type-assertions (without safety comment)
+// ❌ type assertion without justification
 const userId = value as UserId;
 
-// ✅ with safety comment
+// ✅ with a safety comment
 // SAFETY: parseUserId validated the identifier before branding it.
 const userId = value as UserId;
 ```
 
-**Fix:** Every `as` assertion must document why it's safe — a comment that makes the reviewer's job easier and the author's intent explicit.
+**Fix:** Every `as` assertion documents *why* it's safe. This one rule alone transforms code review — no more silent assertion archaeology.
 
 ## Getting Started
 
 ### Quick Install (Recommended)
 
-Use the agent skill installer — it handles copying, dependency installation, and config merging automatically:
+The agent skill installer handles copying, dependency installation, and config merging automatically:
 
 ```bash
 npx skills add dmmulroy/anti-slop --skill install-anti-slop
@@ -120,8 +152,7 @@ Then ask your coding agent to install or configure anti-slop in the current repo
 
 ### Manual Install
 
-1. Copy `src/` into your repo (e.g., `tools/oxlint/anti-slop/`)
-
+1. Copy `src/` into your repo (e.g. `tools/oxlint/anti-slop/`)
 2. Install Oxlint and the plugin:
 
 ```bash
@@ -165,39 +196,37 @@ The first run will surface violations. Fix the critical ones, then adopt the res
 | Anti-slop rules | Not available | 15 opinionated rules |
 | Plugin ecosystem | Vast | Growing, but leaner |
 
-Oxlint's speed advantage compounds with CI. If you run anti-slop on every commit, a 2-second lint pass is the difference between "lint on every push" and "lint only before release."
+That speed compounds in CI. A 2-second lint pass is the difference between "lint on every push" and "lint only before release."
 
 ## Why This Matters
 
-The rise of AI code generation created a new category of technical debt: code that type-checks, passes basic tests, but carries patterns that degrade maintainability over time. Anti-slop is one of the first tools specifically targeting this pattern class.
+AI code generation created a new category of technical debt: code that passes CI but degrades maintainability with every merged PR. Anti-slop is one of the first tools specifically targeting this pattern class.
 
-For teams using Claude Code, Cursor, or Codex as daily assistants, anti-slop functions as a post-generation filter — it catches the low-evidence assertions and `unknown` sprawl that models produce when they prioritize "it works" over "it's correct."
+For teams using Claude Code, Cursor, or Codex as daily assistants, anti-slop acts as a **post-generation quality filter** — catching the low-evidence assertions and `unknown` sprawl models produce when they prioritize "it works" over "it's correct."
 
-This aligns with the approach discussed in [Building Reliable LLM Pipelines with Structured Output](../blog/post.html?slug=building-reliable-llm-pipelines-with-structured-output), where schema validation acts as a reliability layer for LLM outputs. Anti-slop applies the same principle to the code the LLM produces.
-
-For a broader view on code quality fundamentals, see [Fundamentals of Good Programming Practices](../blog/post.html?slug=good-programming-practices).
+This mirrors the approach in [Building Reliable LLM Pipelines with Structured Output](../blog/post.html?slug=building-reliable-llm-pipelines-with-structured-output), where schema validation acts as a reliability layer for LLM outputs. Anti-slop applies the same principle to the code the LLM produces. For a broader view, see [Fundamentals of Good Programming Practices](../blog/post.html?slug=good-programming-practices).
 
 ## Frequently Asked Questions
 
 **Q: Does anti-slop replace ESLint?**
-A: No. Anti-slop is an Oxlint plugin, not an ESLint config. It targets a specific class of patterns — low-evidence type assertions, `unknown` sprawl, and mock-heavy tests. Use it alongside your existing ESLint setup or migrate to Oxlint entirely for the speed benefit.
+A: No. Anti-slop is an Oxlint plugin, not an ESLint config. It targets a specific class of patterns — low-evidence type assertions, `unknown` sprawl, and mock-heavy tests. Use it alongside your existing setup or migrate to Oxlint entirely for the speed benefit.
 
 **Q: Can I use anti-slop with ESLint instead of Oxlint?**
-A: Not directly. Anti-slop is built on Oxlint's plugin API and its rule set. If you're on ESLint, consider migrating to Oxlint — the performance improvement is significant, especially in CI.
+A: Not directly. Anti-slop is built on Oxlint's plugin API. If you're on ESLint, migrating to Oxlint is worth it — the performance improvement is significant, especially in CI.
 
 **Q: Is anti-slop opinionated?**
-A: Yes — that's the point. The rules are designed to be vendored and modified. Copy them into your repo, read them, and adjust the strictness to match your team's standards.
+A: Yes — that's the point. The rules are designed to be vendored and modified. Copy them into your repo, read them, and adjust strictness to match your team's standards.
 
 **Q: Does anti-slop help with AI-generated code?**
-A: That's its primary use case. Anti-slop targets the exact patterns LLMs produce: chained assertions, `unknown` types, module mocking, and reflect-based workarounds. It's a post-generation quality filter for teams using AI assistants.
+A: That's its primary use case. It targets the exact patterns LLMs produce: chained assertions, `unknown` types, module mocking, and reflect-based workarounds.
 
 ## Key Takeaways
 
-- [Anti-slop](https://github.com/dmmulroy/anti-slop) is an Oxlint plugin with 15 rules that reject low-evidence TypeScript patterns, including AI-generated slop
+- [Anti-slop](https://github.com/dmmulroy/anti-slop) is an Oxlint plugin with 15 rules that reject low-evidence TypeScript patterns — including AI-generated slop
 - The rules target chained type assertions, `unknown` types, module mocking, and reflect-based code — all common LLM output patterns
-- Install via `npx skills add dmmulroy/anti-slop --skill install-anti-slop` or copy `src/` into your repo for vendored use
-- Oxlint delivers lint speeds of ~2 seconds on large repos vs ~30 seconds for ESLint
-- Anti-slop is MIT-licensed and designed to be vendored and customized per team
+- Install via `npx skills add dmmulroy/anti-slop --skill install-anti-slop` or vendor `src/` into your repo
+- Oxlint delivers ~2s lint times on large repos vs ~30s for ESLint
+- MIT-licensed and designed to be customized per team
 
 ---
 
