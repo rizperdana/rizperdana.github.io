@@ -188,7 +188,7 @@
 
       try {
         // Load posts index
-        const res = await fetch('../posts.json?v=1774725600');
+        const res = await fetch('../posts.json?v=1786992796');
         postsData = await res.json();
 
         if (!postsData || !postsData.posts) {
@@ -218,7 +218,7 @@
 
       // Try to load markdown file
       try {
-        const res = await fetch(`../posts/${slug}.md?v=1774725600`);
+        const res = await fetch(`../posts/${slug}.md?v=1786992796`);
         if (res.ok) {
           content = await res.text();
         }

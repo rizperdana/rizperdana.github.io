@@ -1,6 +1,22 @@
 {
   "posts": [
     {
+      "slug": "trueforge-agent-harness",
+      "title": "TrueForge: The Open-Source Agent Harness for LLM Apps",
+      "excerpt": "TrueForge is an open-source agent harness that runs the LLM agent loop — model calls, MCP tools, skills, sandboxing, and approvals — from local mode to production.",
+      "date": "2026-08-18",
+      "category": "AI & LLMs",
+      "tags": [
+        "ai-agents",
+        "agent-harness",
+        "llm",
+        "mcp",
+        "typescript",
+        "sandboxing",
+        "open-source"
+      ]
+    },
+    {
       "slug": "anti-slop-typescript-linter",
       "title": "Anti-Slop: TypeScript Linter Rules for Rejecting Low-Quality Code",
       "excerpt": "Anti-slop is a set of opinionated Oxlint rules that reject low-evidence TypeScript and JavaScript patterns — including the AI-generated slop that LLMs commonly produce.",
