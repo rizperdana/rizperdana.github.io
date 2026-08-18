@@ -17,6 +17,38 @@
       ]
     },
     {
+      "slug": "groq-350m-neocloud-pivot",
+      "title": "Groq Raises $350M to Build AI Inference Cloud",
+      "excerpt": "Groq raised $350M led by Disruptive with Nvidia to pivot into an AI inference neocloud, valuing it at $3.5B. Here's what the shift means for developers.",
+      "date": "2026-08-18",
+      "category": "AI & LLMs",
+      "tags": [
+        "groq",
+        "neocloud",
+        "ai-inference",
+        "nvidia",
+        "ai-infrastructure",
+        "funding",
+        "data-centers"
+      ]
+    },
+    {
+      "slug": "ai-agent-frameworks-workspaces",
+      "title": "7 Best AI Agent Frameworks and Workspaces in 2026",
+      "excerpt": "7 best AI agent frameworks and workspaces in 2026 — from self-hosted Odysseus to OpenAI's Agents SDK — to build, run, and wire your AI agents with confidence.",
+      "date": "2026-08-18",
+      "category": "AI & LLMs",
+      "tags": [
+        "ai-agents",
+        "agent-frameworks",
+        "ai-workspaces",
+        "open-source",
+        "multi-agent",
+        "agent-memory",
+        "llm"
+      ]
+    },
+    {
       "slug": "anti-slop-typescript-linter",
       "title": "Anti-Slop: TypeScript Linter Rules for Rejecting Low-Quality Code",
       "excerpt": "Anti-slop is a set of opinionated Oxlint rules that reject low-evidence TypeScript and JavaScript patterns — including the AI-generated slop that LLMs commonly produce.",
