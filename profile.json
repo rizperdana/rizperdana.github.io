@@ -1,14 +1,19 @@
 {
     "name": "Rizki Perdana",
-    "title": "Software Engineer | Fullstack Developer | Machine Learning",
+    "title": "Senior Software Engineer | Python Backend & Fullstack | B2B SaaS | AI/LLM",
     "contacts": [
-        "+62 8960 1361 061",
+        "+6289601361061",
         "perdana.rizki16@gmail.com",
         "https://www.linkedin.com/in/rizkiperdana",
         "https://rizperdana.github.io/",
-        "Yogyakarta, Indonesia"
+        "Greater Yogyakarta"
     ],
-    "summary": "Passionate Software Engineer with 6+ years experience building scalable web applications using Python, Ruby, PHP, and JavaScript. Skilled in API design, database optimization (MySQL, PostgreSQL, Elasticsearch), and automating workflows with Celery, Docker, and CI/CD. Ready to drive innovation and deliver high-quality solutions.",
+    "summary": "Senior Software Engineer with 6+ years of experience building and scaling B2B SaaS products, marketplaces, and backend systems. I specialize in Python-based backend engineering, API design, database optimization, and full-stack development, with hands-on experience across AWS, Docker, CI/CD, and AI/LLM integration. At SourceSage, I work on high-volume B2B systems, improving performance, reliability, deployment workflows, and product capabilities while working across both backend and frontend. I enjoy taking ownership of complex engineering problems, understanding how systems behave in production, and turning business requirements into software that is simple, reliable, and scalable.",
+    "top_skills": [
+        "Application Programming Interfaces (API)",
+        "Representational State Transfer (REST)",
+        "Amazon Web Services (AWS)"
+    ],
     "experience": [
         {
             "company": "SourceSage",
@@ -16,19 +21,20 @@
             "roles": [
                 {
                     "title": "Senior Software Engineer",
-                    "period": "Jul 2026 - Present",
+                    "period": "July 2026 - Present (2 months)",
                     "achievements": [
-                        "Integrated AI and Large Language Models (LLMs) into core features to drive advanced automation and product intelligence.",
-                        "Architected end-to-end high-performance systems and RESTful APIs handling millions of daily B2B requests.",
-                        "Mentored engineering teams on full-stack best practices, coding standards, and scalable system design."
+                        "Design scalable B2B systems and REST APIs handling millions of daily requests.",
+                        "Integrate AI/LLM capabilities into production features and business workflows.",
+                        "Mentor engineers in system design, full-stack development, and engineering best practices."
                     ]
                 },
                 {
                     "title": "Software Engineer",
-                    "period": "Mar 2022 - Jun 2026",
+                    "period": "March 2022 - July 2026 (4 years 5 months)",
                     "achievements": [
-                        "Enhanced user interfaces and system architecture, increasing platform reliability by 40% and reducing latency by 60%.",
-                        "Streamlined CI/CD pipelines and automated deployment strategies, reducing delivery time by 50% and deployment failures by 75%."
+                        "Built and optimized backend systems and REST APIs for high-volume B2B applications.",
+                        "Improved platform reliability by 40% and reduced system latency by 60%.",
+                        "Automated CI/CD and deployment workflows, reducing delivery time by 50% and deployment failures by 75%."
                     ]
                 }
             ]
@@ -37,22 +43,22 @@
             "company": "Binar Academy",
             "title": "Software Engineer",
             "location": "Jakarta, Indonesia",
-            "period": "Feb 2020 - Feb 2022",
+            "period": "February 2020 - February 2022 (2 years 1 month)",
             "achievements": [
-                "Developed full-stack microservices and intuitive interfaces supporting diverse client applications and requirements.",
-                "Engineered robust API contracts and deployment workflows, improving cross-team delivery efficiency by 30%.",
-                "Synchronized frontend UI components with backend logic to ensure seamless integration and high-performance user experiences."
+                "Developed full-stack microservices, REST APIs, and web applications for client projects.",
+                "Improved API contracts and deployment workflows, increasing cross-team delivery efficiency by 30%.",
+                "Built frontend-backend integrations focused on performance and maintainability."
             ]
         },
         {
             "company": "PT Gamatechno Indonesia",
             "title": "Software Engineer",
             "location": "Yogyakarta, Indonesia",
-            "period": "Feb 2018 - Feb 2020",
+            "period": "February 2018 - February 2020 (2 years 1 month)",
             "achievements": [
-                "Built and deployed full-stack web applications featuring dynamic UIs and secure, scalable backend architectures.",
-                "Developed RESTful API services and managed deployments for platforms supporting thousands of daily active users.",
-                "Implemented secure authentication and data protection systems across the entire application stack to safeguard sensitive business information."
+                "Built and deployed full-stack web applications serving thousands of daily active users.",
+                "Developed REST APIs, authentication, and data protection systems.",
+                "Managed application deployments and backend services across the software development lifecycle."
             ]
         }
     ],
@@ -63,23 +69,23 @@
         "period": "2016 - 2020"
     },
     "skills": {
-        "Programming Languages": "Python, Ruby, JavaScript, PHP, SQL, Shell Scripting",
-        "Frontend Development": "React, Vue.js, UI/UX Implementation, Responsive Design, Component Architecture",
-        "Full-Stack Development": "REST APIs, Microservices, Event-Driven Architecture, Distributed Systems",
-        "Database Technologies": "Relational Databases (MySQL, PostgreSQL), NoSQL, Data Modeling, Transaction Management, Elasticsearch",
-        "Deployment & DevOps": "CI/CD Pipelines, Containerization, Infrastructure as Code, Cloud Platforms, Automated Testing, Docker, Celery",
-        "AI & Machine Learning": "LLM Integration, OpenCLAW, RAG (Retrieval-Augmented Generation), AI Programming, NLP, Workflow Automation, Intelligent Systems Design",
+        "Programming Languages": "Python, JavaScript, SQL, TypeScript",
+        "Backend Development": "REST APIs, Microservices, Event-Driven Architecture, Distributed Systems, Flask, FastAPI",
+        "Frontend Development": "React, UI/UX Implementation, Responsive Design, Component Architecture",
+        "Database Technologies": "MySQL, PostgreSQL, Data Modeling, Transaction Management, Elasticsearch",
+        "Cloud & DevOps": "AWS, Docker, CI/CD Pipelines, Containerization, Infrastructure as Code, Automated Testing",
+        "AI & LLM Integration": "LLM Production Integration, AI Workflow Automation, Intelligent Systems Design",
         "Performance & Scalability": "System Optimization, Caching, Load Balancing, Performance Monitoring",
         "Development Practices": "Agile, Code Review, Technical Documentation, Security Best Practices"
     },
     "languages": [
         {
             "name": "English",
-            "level": "Professional Working"
+            "level": "Full Professional"
         },
         {
             "name": "Indonesian",
-            "level": "Native"
+            "level": "Native or Bilingual"
         }
     ],
     "certifications": [
