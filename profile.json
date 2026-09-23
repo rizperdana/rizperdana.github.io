@@ -21,20 +21,11 @@
             "roles": [
                 {
                     "title": "Senior Software Engineer",
-                    "period": "July 2026 - Present (2 months)",
+                    "period": "March 2022 - Present (4 years)",
                     "achievements": [
                         "Design scalable B2B systems and REST APIs handling millions of daily requests.",
                         "Integrate AI/LLM capabilities into production features and business workflows.",
                         "Mentor engineers in system design, full-stack development, and engineering best practices."
-                    ]
-                },
-                {
-                    "title": "Software Engineer",
-                    "period": "March 2022 - July 2026 (4 years 5 months)",
-                    "achievements": [
-                        "Built and optimized backend systems and REST APIs for high-volume B2B applications.",
-                        "Improved platform reliability by 40% and reduced system latency by 60%.",
-                        "Automated CI/CD and deployment workflows, reducing delivery time by 50% and deployment failures by 75%."
                     ]
                 }
             ]
