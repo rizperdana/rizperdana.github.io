@@ -1,45 +1,57 @@
 {
   "projects": [
     {
-      "title": "99 SME Marketplace",
-      "description": "Online procurement B2B provider for client companies",
-      "technologies": ["REST API", "React", "RDBMS Database", "AWS"],
-      "url": "https://www.sourcesage.co",
-      "status": "Active",
-      "featured": false
-    },
-    {
-      "title": "Core Marketplace Order Processing",
-      "description": "Core processing Order integrated with many financial payment gateway",
-      "technologies": ["REST API", "React", "RDBMS Database", "AWS"],
-      "url": "https://www.sourcesage.co",
-      "status": "Active",
-      "featured": false
-    },
-    {
-      "title": "Semgrepll",
-      "description": "Local semantic code search - 100% offline AI-powered grep using embeddings. Supports llama.cpp, ONNX, and Ollama backends.",
-      "technologies": ["Python", "LanceDB", "SQLite", "Ollama", "ONNX Runtime", "llama.cpp"],
+      "title": "semgrepll",
+      "category": "Developer tooling",
+      "description": "A local semantic code-search CLI for AI coding agents. Indexes code by meaning, runs embeddings locally through llama.cpp, ONNX Runtime, or Ollama, and stores vectors in SQLite or LanceDB.",
+      "technologies": [
+        "Python",
+        "Embeddings",
+        "llama.cpp",
+        "ONNX Runtime",
+        "Ollama",
+        "SQLite",
+        "LanceDB"
+      ],
       "url": "https://github.com/rizperdana/semgrepll",
-      "status": "Active",
+      "demo_url": "https://rizperdana.github.io/semgrepll",
+      "secondary_url": "https://pypi.org/project/semgrepll/",
       "featured": true
     },
     {
-      "title": "RealityCheck",
-      "description": "Job consultation and career transition platform helping professionals find their next opportunity",
-      "technologies": ["Next.js", "React", "TypeScript", "Vercel"],
-      "url": "https://pindahkerja.vercel.app/",
-      "status": "Active",
+      "title": "Lazy Matcher",
+      "category": "AI-assisted backend system",
+      "description": "An asynchronous job-matching pipeline that extracts job descriptions from text or URLs, scores them against a candidate profile, and processes work through PostgreSQL-backed workers with Redis queueing, LLM scoring, and deterministic fallback.",
+      "technologies": [
+        "Python",
+        "FastAPI",
+        "PostgreSQL",
+        "Redis",
+        "Gemini",
+        "Next.js"
+      ],
+      "url": "https://github.com/rizperdana/lazy-matcher",
+      "demo_url": null,
+      "secondary_url": null,
       "featured": true
     },
     {
-      "title": "Wikwok",
-      "description": "A high-engagement, vertical-scroll discovery engine that transforms Wikipedia content into a localized, social-media-style learning experience.",
-      "technologies": ["Next.js 15", "React Compiler", "TypeScript", "Supabase", "TanStack Query", "Framer Motion", "Vercel Edge"],
-      "url": "https://wik-wok.vercel.app/",
-      "status": "Active",
+      "title": "WikWok",
+      "category": "Full-stack product",
+      "description": "A mobile-first Wikipedia discovery app with a swipeable feed, search, trending topics, 10+ languages, and an installable PWA.",
+      "technologies": [
+        "Next.js 16",
+        "React 19",
+        "TypeScript",
+        "Tailwind CSS 4",
+        "TanStack Query",
+        "Framer Motion",
+        "PWA"
+      ],
+      "url": "https://github.com/rizperdana/WikWok",
+      "demo_url": "https://wik-wok.vercel.app/",
+      "secondary_url": null,
       "featured": true
     }
-    
   ]
 }

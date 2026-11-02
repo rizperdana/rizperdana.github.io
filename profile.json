@@ -1,89 +1,123 @@
 {
-    "name": "Rizki Perdana",
-    "title": "Senior Software Engineer | Python Backend & Fullstack | B2B SaaS | AI/LLM",
-    "contacts": [
-        "+6289601361061",
-        "perdana.rizki16@gmail.com",
-        "https://www.linkedin.com/in/rizkiperdana",
-        "https://rizperdana.github.io/",
-        "Greater Yogyakarta"
-    ],
-    "summary": "Senior Software Engineer with 6+ years of experience building and scaling B2B SaaS products, marketplaces, and backend systems. I specialize in Python-based backend engineering, API design, database optimization, and full-stack development, with hands-on experience across AWS, Docker, CI/CD, and AI/LLM integration. At SourceSage, I work on high-volume B2B systems, improving performance, reliability, deployment workflows, and product capabilities while working across both backend and frontend. I enjoy taking ownership of complex engineering problems, understanding how systems behave in production, and turning business requirements into software that is simple, reliable, and scalable.",
-    "top_skills": [
-        "Application Programming Interfaces (API)",
-        "Representational State Transfer (REST)",
-        "Amazon Web Services (AWS)"
-    ],
-    "experience": [
-        {
-            "company": "SourceSage",
-            "location": "Singapore",
-            "roles": [
-                {
-                    "title": "Senior Software Engineer",
-                    "period": "March 2022 - Present (4 years)",
-                    "achievements": [
-                        "Design scalable B2B systems and REST APIs handling millions of daily requests.",
-                        "Integrate AI/LLM capabilities into production features and business workflows.",
-                        "Mentor engineers in system design, full-stack development, and engineering best practices.",
-                        "Built and optimized backend systems and REST APIs for high-volume B2B applications.",
-                        "Improved platform reliability by 40% and reduced system latency by 60%.",
-                        "Automated CI/CD and deployment workflows, reducing delivery time by 50% and deployment failures by 75%."
-                    ]
-                }
-            ]
-        },
-        {
-            "company": "Binar Academy",
-            "title": "Software Engineer",
-            "location": "Jakarta, Indonesia",
-            "period": "February 2020 - February 2022 (2 years 1 month)",
-            "achievements": [
-                "Developed full-stack microservices, REST APIs, and web applications for client projects.",
-                "Improved API contracts and deployment workflows, increasing cross-team delivery efficiency by 30%.",
-                "Built frontend-backend integrations focused on performance and maintainability."
-            ]
-        },
-        {
-            "company": "PT Gamatechno Indonesia",
-            "title": "Software Engineer",
-            "location": "Yogyakarta, Indonesia",
-            "period": "February 2018 - February 2020 (2 years 1 month)",
-            "achievements": [
-                "Built and deployed full-stack web applications serving thousands of daily active users.",
-                "Developed REST APIs, authentication, and data protection systems.",
-                "Managed application deployments and backend services across the software development lifecycle."
-            ]
-        }
-    ],
-    "education": {
-        "institution": "Yogyakarta State University",
-        "degree": "Bachelor Degree, Accounting",
-        "location": "Yogyakarta, Indonesia",
-        "period": "2016 - 2020"
+  "name": "Rizki Perdana",
+  "title": "Senior Software Engineer | Python Backend & AI Integration",
+  "location": "Indonesia",
+  "summary": "I build Python backends, B2B products, and production AI workflows.",
+  "contacts": [
+    {
+      "label": "Email",
+      "value": "perdana.rizki16@gmail.com",
+      "url": "mailto:perdana.rizki16@gmail.com"
     },
-    "skills": {
-        "Programming Languages": "Python, JavaScript, SQL, TypeScript",
-        "Backend Development": "REST APIs, Microservices, Event-Driven Architecture, Distributed Systems, Flask, FastAPI",
-        "Frontend Development": "React, UI/UX Implementation, Responsive Design, Component Architecture",
-        "Database Technologies": "MySQL, PostgreSQL, Data Modeling, Transaction Management, Elasticsearch",
-        "Cloud & DevOps": "AWS, Docker, CI/CD Pipelines, Containerization, Infrastructure as Code, Automated Testing",
-        "AI & LLM Integration": "LLM Production Integration, AI Workflow Automation, Intelligent Systems Design",
-        "Performance & Scalability": "System Optimization, Caching, Load Balancing, Performance Monitoring",
-        "Development Practices": "Agile, Code Review, Technical Documentation, Security Best Practices"
+    {
+      "label": "LinkedIn",
+      "value": "LinkedIn",
+      "url": "https://www.linkedin.com/in/rizkiperdana"
     },
-    "languages": [
-        {
-            "name": "English",
-            "level": "Full Professional"
-        },
-        {
-            "name": "Indonesian",
-            "level": "Native or Bilingual"
-        }
-    ],
-    "certifications": [
+    {
+      "label": "GitHub",
+      "value": "GitHub",
+      "url": "https://github.com/rizperdana"
+    }
+  ],
+  "experience": [
+    {
+      "company": "SourceSage",
+      "title": "Senior Software Engineer",
+      "location": "Singapore",
+      "period": "March 2022 - Present",
+      "achievements": [
+        "Own backend and full-stack delivery across a B2B procurement platform, spanning Python services, React features, supplier, order and payment workflows, and external integrations.",
+        "Led an AI-assisted purchase-order workflow that turns customer and partner email/PDF orders into structured data, with human review before order creation and invoicing.",
+        "Reduced manual data-correction rates from roughly 50% at the outset to around 3% after model and workflow iteration; outputs remain subject to human review.",
+        "Mentor junior engineers and contribute across solution design, implementation, code review, AWS deployments, and production support."
+      ]
+    },
+    {
+      "company": "Binar Academy",
+      "title": "Software Engineer",
+      "location": "Jakarta, Indonesia",
+      "period": "February 2020 - February 2022",
+      "achievements": [
+        "Built REST APIs and full-stack web features for client projects, working across database design, service integrations, testing, and releases."
+      ]
+    },
+    {
+      "company": "PT Gamatechno Indonesia",
+      "title": "Software Engineer",
+      "location": "Yogyakarta, Indonesia",
+      "period": "February 2018 - February 2020",
+      "achievements": [
+        "Developed and maintained web applications, REST APIs, authentication, and data-handling features; supported deployments and application operations."
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "category": "Languages",
+      "items": [
+        "Python",
         "SQL",
-        "Python"
-    ]
+        "JavaScript",
+        "TypeScript"
+      ]
+    },
+    {
+      "category": "Backend",
+      "items": [
+        "Flask",
+        "FastAPI",
+        "SQLAlchemy",
+        "Celery",
+        "REST APIs",
+        "Asynchronous processing"
+      ]
+    },
+    {
+      "category": "Data",
+      "items": [
+        "MySQL",
+        "PostgreSQL",
+        "Redis",
+        "Elasticsearch",
+        "OpenSearch"
+      ]
+    },
+    {
+      "category": "Cloud and delivery",
+      "items": [
+        "AWS Lambda",
+        "Zappa",
+        "Docker",
+        "CI/CD",
+        "GitHub Actions"
+      ]
+    },
+    {
+      "category": "Frontend and AI",
+      "items": [
+        "React",
+        "Next.js",
+        "LLM and vision-model integration",
+        "Document extraction",
+        "Human-in-the-loop workflows"
+      ]
+    }
+  ],
+  "education": {
+    "institution": "Yogyakarta State University",
+    "degree": "Bachelor of Accounting",
+    "location": "Yogyakarta, Indonesia",
+    "period": "2016 - 2020"
+  },
+  "languages": [
+    {
+      "name": "Indonesian",
+      "level": "Native"
+    },
+    {
+      "name": "English",
+      "level": "Professional working proficiency"
+    }
+  ]
 }
