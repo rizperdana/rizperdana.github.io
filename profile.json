@@ -1,8 +1,8 @@
 {
   "name": "Rizki Perdana",
-  "title": "Senior Software Engineer | Python Backend & AI Integration",
+  "title": "Full-Stack Software Engineer | Product, Cloud & Applied AI",
   "location": "Indonesia",
-  "summary": "I build Python backends, B2B products, and production AI workflows.",
+  "summary": "I build software across React interfaces, Python backends, cloud infrastructure, and applied AI workflows.",
   "contacts": [
     {
       "label": "Email",
@@ -27,10 +27,13 @@
       "location": "Singapore",
       "period": "March 2022 - Present",
       "achievements": [
-        "Own backend and full-stack delivery across a B2B procurement platform, spanning Python services, React features, supplier, order and payment workflows, and external integrations.",
-        "Led an AI-assisted purchase-order workflow that turns customer and partner email/PDF orders into structured data, with human review before order creation and invoicing.",
-        "Reduced the extraction error rate from roughly 50% initially to around 3% after model and workflow iteration; outputs remain subject to human review.",
-        "Mentor junior engineers and contribute across solution design, implementation, code review, AWS deployments, and production support."
+        "Own full-stack delivery across a B2B procurement platform, building Python/Flask services and React interfaces backed by SQLAlchemy, MySQL, Celery, and external integrations.",
+        "Design supplier, order, payment, and document workflows across API contracts, relational data models, asynchronous processing, and user-facing product features.",
+        "Lead an AI-assisted purchase-order workflow: select and evaluate LLM and vision models, engineer prompts and extraction/normalization logic for email and PDF orders, and retain human approval before order creation and invoicing.",
+        "Reduced the purchase-order extraction error rate from roughly 50% initially to around 3% after model and workflow iteration; outputs remain human-reviewed.",
+        "Build agentic workflows and MCP tool integrations, applying RAG and retrieval, context design, tool calling, and agent-harness patterns with explicit read-only and approval boundaries.",
+        "Manage cloud environments across AWS and GCP; handle deployment configuration, service and instance operations, Terraform-based infrastructure changes, and production releases.",
+        "Mentor junior engineers and contribute to solution design, code review, technical decisions, and production support."
       ]
     },
     {
@@ -54,53 +57,67 @@
   ],
   "skills": [
     {
-      "category": "Languages",
+      "category": "Frontend & product",
       "items": [
-        "Python",
-        "SQL",
+        "React",
+        "Next.js",
         "JavaScript",
-        "TypeScript"
+        "TypeScript",
+        "Responsive UI",
+        "Component-driven development"
       ]
     },
     {
-      "category": "Backend",
+      "category": "Backend & APIs",
       "items": [
+        "Python",
         "Flask",
         "FastAPI",
         "SQLAlchemy",
         "Celery",
         "REST APIs",
-        "Asynchronous processing"
+        "Asynchronous processing",
+        "Integrations"
       ]
     },
     {
-      "category": "Data",
+      "category": "Cloud & infrastructure",
+      "items": [
+        "AWS",
+        "GCP",
+        "Terraform",
+        "Docker",
+        "Serverless deployments",
+        "CI/CD",
+        "Infrastructure configuration",
+        "Service operations"
+      ]
+    },
+    {
+      "category": "Data & search",
       "items": [
         "MySQL",
         "PostgreSQL",
         "Redis",
         "Elasticsearch",
-        "OpenSearch"
+        "OpenSearch",
+        "Vector search",
+        "Retrieval"
       ]
     },
     {
-      "category": "Cloud and delivery",
+      "category": "AI & agent engineering",
       "items": [
-        "AWS Lambda",
-        "Zappa",
-        "Docker",
-        "CI/CD",
-        "GitHub Actions"
-      ]
-    },
-    {
-      "category": "Frontend and AI",
-      "items": [
-        "React",
-        "Next.js",
-        "LLM and vision-model integration",
+        "LLM and vision-model selection/evaluation",
+        "Inference and embeddings",
+        "Prompt engineering",
         "Document extraction",
-        "Human-in-the-loop workflows"
+        "RAG",
+        "Agentic workflows",
+        "MCP",
+        "Tool calling",
+        "Agent harnesses",
+        "Human-in-the-loop controls"
       ]
     }
   ],
@@ -119,5 +136,6 @@
       "name": "English",
       "level": "Professional working proficiency"
     }
-  ]
+  ],
+  "cv_summary": "Full-stack software engineer with 8+ years of experience delivering B2B products and web applications. I work across React and Next.js interfaces, Python backend services, relational data, cloud platforms, and infrastructure as code. My applied-AI work covers model selection and evaluation, prompt engineering, document extraction, RAG and retrieval, agentic workflows, MCP integrations, and controlled tool use. I take features from problem definition and system design through implementation, deployment, and production support."
 }

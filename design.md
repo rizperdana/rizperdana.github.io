@@ -1,12 +1,22 @@
-# Portfolio refresh
+# Portfolio redesign
 
-Hallmark v2, modern-minimal/Cobalt direction: near-white paper, blue-grey ink, cobalt accent, fine rules, confident typography and restrained motion. The hero leads with a real semgrepll screenshot. Content prioritizes Python backend delivery, production AI integration, and three verifiable public projects.
+Hallmark v2, modern-minimal / Cobalt direction: cool near-white paper, blue-grey ink, one cobalt accent, decisive typography and fine rules. The homepage uses a typographic hero and a text-only engineering capability index. No project screenshots or decorative imagery appear in the homepage hero.
+
+## Purpose
+
+Position Rizki as a full-stack software engineer who can deliver the product interface, backend systems, cloud infrastructure and applied-AI workflow. The first screen establishes that range without a project mockup or generic slogan.
 
 ## Routes
-- index.html: portfolio overview, work, experience, skills, education, writing and contact.
-- projects.html: selected project directory.
-- cv.html: printable, accessible CV with a browser Print / Save as PDF action.
-- blog/index.html and blog/post.html: existing writing archive retained; original posts.json is not replaced.
+
+- `index.html`: typographic homepage, selected projects, experience, technical practice, writing and contact.
+- `projects.html`: selected independent projects and verified links.
+- `cv.html`: accessible screen CV and print stylesheet for a matching A4 PDF.
+- `blog/index.html` and `blog/post.html`: existing writing archive retained.
 
 ## Content rules
-SourceSage is described at a non-confidential level. The correction-rate claim is presented with human review caveat. No invented clients, customer counts, testimonials, awards, or performance results. semgrepll, Lazy Matcher, and WikWok are selected because they show developer tooling, asynchronous backend design, and full-stack product delivery.
+
+- Feature `semgrepll`, `Lazy Matcher` and `WikWok` as the three public project examples.
+- Reflect React, Python/backend, AWS/GCP/Terraform and AI engineering in the professional experience and skills sections.
+- Describe SourceSage work without exposing proprietary system details.
+- Retain the extraction-error improvement only with the human-review caveat.
+- Do not invent customer counts, testimonials, awards, benchmark claims or performance measurements.
