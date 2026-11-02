@@ -29,7 +29,7 @@
       "achievements": [
         "Own backend and full-stack delivery across a B2B procurement platform, spanning Python services, React features, supplier, order and payment workflows, and external integrations.",
         "Led an AI-assisted purchase-order workflow that turns customer and partner email/PDF orders into structured data, with human review before order creation and invoicing.",
-        "Reduced manual data-correction rates from roughly 50% at the outset to around 3% after model and workflow iteration; outputs remain subject to human review.",
+        "Reduced the extraction error rate from roughly 50% initially to around 3% after model and workflow iteration; outputs remain subject to human review.",
         "Mentor junior engineers and contribute across solution design, implementation, code review, AWS deployments, and production support."
       ]
     },
