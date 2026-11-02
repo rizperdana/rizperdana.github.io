@@ -5,7 +5,7 @@ Hallmark v2, modern-minimal/Cobalt direction: near-white paper, blue-grey ink, c
 ## Routes
 - index.html: portfolio overview, work, experience, skills, education, writing and contact.
 - projects.html: selected project directory.
-- cv.html: printable, accessible CV with a stable cv.pdf download.
+- cv.html: printable, accessible CV with a browser Print / Save as PDF action.
 - blog/index.html and blog/post.html: existing writing archive retained; original posts.json is not replaced.
 
 ## Content rules
